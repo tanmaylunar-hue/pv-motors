@@ -1,0 +1,186 @@
+{
+  "catalogue": [
+    {
+      "id": "1",
+      "slug": "komaki-ranger-pro",
+      "vehicle": "KOMAKI Ranger",
+      "variant": "Pro 3.2 kWh",
+      "category": "scooter",
+      "tagline": "Urban agility meets long-range comfort",
+      "price": 129999,
+      "specifications": [
+        { "label": "Range", "value": "180 km" },
+        { "label": "Top Speed", "value": "80 km/h" },
+        { "label": "Battery", "value": "3.2 kWh Lithium" },
+        { "label": "Motor", "value": "3000W BLDC" },
+        { "label": "Charging", "value": "4 hours" },
+        { "label": "Ground Clearance", "value": "165 mm" }
+      ],
+      "images": ["/vehicles/komaki-ranger-pro.svg", "/vehicles/komaki-ranger-pro-side.svg"],
+      "stockStatus": "in_stock",
+      "featured": true,
+      "highlights": [
+        "Regenerative braking",
+        "Digital instrument cluster",
+        "Tubeless tyres with alloy wheels",
+        "USB charging port"
+      ]
+    },
+    {
+      "id": "2",
+      "slug": "komaki-ranger-standard",
+      "vehicle": "KOMAKI Ranger",
+      "variant": "Standard 2.8 kWh",
+      "category": "scooter",
+      "tagline": "Everyday range with premium comfort",
+      "price": 114999,
+      "specifications": [
+        { "label": "Range", "value": "150 km" },
+        { "label": "Top Speed", "value": "75 km/h" },
+        { "label": "Battery", "value": "2.8 kWh Lithium" },
+        { "label": "Motor", "value": "2500W BLDC" },
+        { "label": "Charging", "value": "3.5 hours" },
+        { "label": "Ground Clearance", "value": "165 mm" }
+      ],
+      "images": ["/vehicles/komaki-ranger-standard.svg"],
+      "stockStatus": "low_stock",
+      "featured": false,
+      "highlights": [
+        "Eco & Sport modes",
+        "LED headlamp",
+        "Comfort seat",
+        "Side stand sensor"
+      ]
+    },
+    {
+      "id": "3",
+      "slug": "komaki-venice-deluxe",
+      "vehicle": "KOMAKI Venice",
+      "variant": "Deluxe 2.8 kWh",
+      "category": "scooter",
+      "tagline": "Premium styling for the modern commuter",
+      "price": 109999,
+      "specifications": [
+        { "label": "Range", "value": "150 km" },
+        { "label": "Top Speed", "value": "70 km/h" },
+        { "label": "Battery", "value": "2.8 kWh Lithium" },
+        { "label": "Motor", "value": "2500W BLDC" },
+        { "label": "Charging", "value": "3.5 hours" },
+        { "label": "Ground Clearance", "value": "160 mm" }
+      ],
+      "images": ["/vehicles/komaki-venice-deluxe.svg", "/vehicles/komaki-venice-deluxe-side.svg"],
+      "stockStatus": "in_stock",
+      "featured": true,
+      "highlights": [
+        "LED headlamp & DRLs",
+        "Anti-theft alarm",
+        "Reverse mode",
+        "Keyless start"
+      ]
+    },
+    {
+      "id": "4",
+      "slug": "komaki-tn-95-sport",
+      "vehicle": "KOMAKI TN 95",
+      "variant": "Sport 4.5 kWh",
+      "category": "motorcycle",
+      "tagline": "High-performance electric motorcycle",
+      "price": 189999,
+      "specifications": [
+        { "label": "Range", "value": "220 km" },
+        { "label": "Top Speed", "value": "100 km/h" },
+        { "label": "Battery", "value": "4.5 kWh Lithium" },
+        { "label": "Motor", "value": "5000W BLDC" },
+        { "label": "Charging", "value": "5 hours" },
+        { "label": "Kerb Weight", "value": "118 kg" }
+      ],
+      "images": ["/vehicles/komaki-tn-95-sport.svg"],
+      "stockStatus": "in_stock",
+      "featured": true,
+      "highlights": [
+        "Sport-tuned suspension",
+        "Dual disc brakes with CBS",
+        "Sport riding modes",
+        "Fast charging compatible"
+      ]
+    },
+    {
+      "id": "5",
+      "slug": "komaki-mx-3-eco",
+      "vehicle": "KOMAKI MX 3",
+      "variant": "Eco 2.2 kWh",
+      "category": "scooter",
+      "tagline": "Entry-level EV for everyday rides",
+      "price": 89999,
+      "specifications": [
+        { "label": "Range", "value": "120 km" },
+        { "label": "Top Speed", "value": "60 km/h" },
+        { "label": "Battery", "value": "2.2 kWh Lithium" },
+        { "label": "Motor", "value": "2000W BLDC" },
+        { "label": "Charging", "value": "3 hours" },
+        { "label": "Ground Clearance", "value": "155 mm" }
+      ],
+      "images": ["/vehicles/komaki-mx-3-eco.svg"],
+      "stockStatus": "in_stock",
+      "featured": false,
+      "highlights": [
+        "Affordable ownership",
+        "Low maintenance cost",
+        "Comfortable seating",
+        "Eco mode for extended range"
+      ]
+    },
+    {
+      "id": "6",
+      "slug": "komaki-loader-pro",
+      "vehicle": "KOMAKI Loader Pro",
+      "variant": "Commercial 5.0 kWh",
+      "category": "loader",
+      "tagline": "Commercial-grade electric loader",
+      "price": 249999,
+      "specifications": [
+        { "label": "Range", "value": "140 km" },
+        { "label": "Top Speed", "value": "55 km/h" },
+        { "label": "Battery", "value": "5.0 kWh Lithium" },
+        { "label": "Motor", "value": "4000W BLDC" },
+        { "label": "Payload", "value": "350 kg" },
+        { "label": "Charging", "value": "6 hours" }
+      ],
+      "images": ["/vehicles/komaki-loader-pro.svg"],
+      "stockStatus": "pre_order",
+      "featured": false,
+      "highlights": [
+        "Heavy-duty chassis",
+        "Large cargo bed",
+        "Fleet-ready telematics",
+        "Low running cost"
+      ]
+    },
+    {
+      "id": "7",
+      "slug": "komaki-venice-lite",
+      "vehicle": "KOMAKI Venice",
+      "variant": "Lite 2.4 kWh",
+      "category": "scooter",
+      "tagline": "Lightweight city commuter",
+      "price": 94999,
+      "specifications": [
+        { "label": "Range", "value": "110 km" },
+        { "label": "Top Speed", "value": "65 km/h" },
+        { "label": "Battery", "value": "2.4 kWh Lithium" },
+        { "label": "Motor", "value": "2000W BLDC" },
+        { "label": "Charging", "value": "3 hours" },
+        { "label": "Ground Clearance", "value": "158 mm" }
+      ],
+      "images": ["/vehicles/komaki-venice-lite.svg"],
+      "stockStatus": "out_of_stock",
+      "featured": false,
+      "highlights": [
+        "Compact design",
+        "Easy manoeuvrability",
+        "Budget-friendly",
+        "Low running costs"
+      ]
+    }
+  ]
+}

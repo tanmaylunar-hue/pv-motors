@@ -1,0 +1,8 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <rect width="800" height="600" fill="#fafafa"/>
+  <rect x="180" y="200" width="440" height="180" rx="6" stroke="#e5e5e5" stroke-width="2"/>
+  <circle cx="270" cy="380" r="36" stroke="#e5e5e5" stroke-width="2"/>
+  <circle cx="530" cy="380" r="36" stroke="#e5e5e5" stroke-width="2"/>
+  <path d="M220 260 L310 200 L490 200 L580 260" stroke="#e5e5e5" stroke-width="2"/>
+  <text x="400" y="160" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="#a3a3a3" letter-spacing="3">KOMAKI TN 95 SPORT</text>
+</svg>
