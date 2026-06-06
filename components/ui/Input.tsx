@@ -35,6 +35,42 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
   );
 }
 
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  error?: string;
+}
+
+export function Select({ label, error, className, id, children, ...props }: SelectProps) {
+  const inputId = id ?? label?.toLowerCase().replace(/\s+/g, "-");
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <label
+          htmlFor={inputId}
+          className="block text-xs font-medium uppercase tracking-[0.15em] text-muted"
+        >
+          {label}
+        </label>
+      )}
+      <select
+        id={inputId}
+        className={cn(
+          "w-full border border-border bg-background px-4 py-3 text-sm text-foreground",
+          "focus:border-foreground focus:outline-none",
+          "transition-colors duration-300",
+          error && "border-red-500",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </select>
+      {error && <p className="text-sm text-red-400">{error}</p>}
+    </div>
+  );
+}
+
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;

@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum VehicleCategory {
+  scooter
+  motorcycle
+  loader
+}
+
+enum StockStatus {
+  in_stock
+  low_stock
+  out_of_stock
+  pre_order
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  fulfilled
+  cancelled
+}
+
+enum EnquiryStatus {
+  new
+  contacted
+  scheduled
+  closed
+}
+
+model Vehicle {
+  id        String          @id @default(cuid())
+  name      String
+  category  VehicleCategory
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  variants  Variant[]
+
+  @@map("vehicles")
+}
+
+model Variant {
+  id             String      @id @default(cuid())
+  vehicleId      String
+  vehicle        Vehicle     @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  name           String
+  slug           String      @unique
+  tagline        String
+  price          Int
+  specifications Json        @default("[]")
+  images         Json        @default("[]")
+  stockStatus    StockStatus @default(in_stock)
+  featured       Boolean     @default(false)
+  highlights     Json        @default("[]")
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  orders         Order[]
+  enquiries      Enquiry[]
+
+  @@map("variants")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  variantId     String
+  variant       Variant     @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  customerName  String
+  customerEmail String
+  customerPhone String
+  status        OrderStatus @default(pending)
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model Enquiry {
+  id          String        @id @default(cuid())
+  name        String
+  phone       String
+  address     String
+  city        String
+  state       String
+  vehicleName String
+  variantName String
+  status      EnquiryStatus @default(new)
+  variantId   String?
+  variant     Variant?      @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("enquiries")
+}

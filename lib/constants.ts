@@ -16,6 +16,10 @@ export const CONTACT_INFO = {
   hours: "Mon – Sat: 10:00 AM – 8:00 PM",
 } as const;
 
+/** WhatsApp number for admin enquiry alerts (digits only, with country code). */
+export const ADMIN_WHATSAPP =
+  process.env.NEXT_PUBLIC_ADMIN_WHATSAPP ?? CONTACT_INFO.phone.replace(/\D/g, "");
+
 export const SOCIAL_LINKS = [
   { href: "https://instagram.com", label: "Instagram" },
   { href: "https://facebook.com", label: "Facebook" },
