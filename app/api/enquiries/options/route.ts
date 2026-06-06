@@ -25,7 +25,7 @@ export async function GET() {
 
     return jsonOk({
       source: "catalogue" as const,
-      vehicles: getCatalogueEnquiryOptions(),
+      vehicles: await getCatalogueEnquiryOptions(),
     });
   } catch (error) {
     return handlePrismaError(error);

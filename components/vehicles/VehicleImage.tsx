@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { getPrimaryImage } from "@/lib/catalogue";
+import { getPrimaryImage } from "@/lib/catalogue-format";
 import type { CatalogueItem } from "@/types/catalogue";
 
 interface VehicleImageProps {

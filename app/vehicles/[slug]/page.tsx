@@ -10,23 +10,25 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Numeric } from "@/components/ui/Numeric";
 import {
-  catalogue,
-  formatPrice,
+  getCatalogue,
   getCatalogueItemBySlug,
-  getSpecValue,
-} from "@/lib/catalogue";
+} from "@/lib/catalogue-server";
+import { formatPrice, getSpecValue } from "@/lib/catalogue-format";
 
 interface VehicleDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const catalogue = await getCatalogue();
   return catalogue.map((item) => ({ slug: item.slug }));
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: VehicleDetailPageProps) {
   const { slug } = await params;
-  const item = getCatalogueItemBySlug(slug);
+  const item = await getCatalogueItemBySlug(slug);
   if (!item) return { title: "Vehicle Not Found" };
   return {
     title: `${item.vehicle} — ${item.variant}`,
@@ -36,7 +38,7 @@ export async function generateMetadata({ params }: VehicleDetailPageProps) {
 
 export default async function VehicleDetailPage({ params }: VehicleDetailPageProps) {
   const { slug } = await params;
-  const item = getCatalogueItemBySlug(slug);
+  const item = await getCatalogueItemBySlug(slug);
 
   if (!item) {
     notFound();

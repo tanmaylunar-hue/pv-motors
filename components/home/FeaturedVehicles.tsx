@@ -3,10 +3,10 @@ import { VehicleCard } from "@/components/vehicles/VehicleCard";
 import { Container, Section, SectionHeader } from "@/components/ui/Section";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Button } from "@/components/ui/Button";
-import { getFeaturedCatalogueItems } from "@/lib/catalogue";
+import { getFeaturedCatalogueItems } from "@/lib/catalogue-server";
 
-export function FeaturedVehicles() {
-  const featured = getFeaturedCatalogueItems();
+export async function FeaturedVehicles() {
+  const featured = await getFeaturedCatalogueItems();
 
   return (
     <Section id="featured" className="border-t border-border">

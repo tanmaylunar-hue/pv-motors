@@ -1,5 +1,5 @@
 import type { StockStatus } from "@/types/catalogue";
-import { formatStockStatus } from "@/lib/catalogue";
+import { formatStockStatus } from "@/lib/catalogue-format";
 import { Badge } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 

@@ -6,7 +6,7 @@ import {
   formatPrice,
   getPrimaryImage,
   getSpecValue,
-} from "@/lib/catalogue";
+} from "@/lib/catalogue-format";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Numeric } from "@/components/ui/Numeric";
