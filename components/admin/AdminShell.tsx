@@ -8,6 +8,7 @@ import {
   Image as ImageIcon, Users, ScrollText, CreditCard, Database, 
   KeyRound, ShieldCheck, User, Bell 
 } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SITE_NAME } from "@/lib/constants";
 
@@ -30,7 +31,7 @@ export function AdminShell({ children, admin }: AdminShellProps) {
   
   const [toasts, setToasts] = useState<Toast[]>([]);
   const lastCheckedTime = useRef<number>(Date.now());
-
+  
   async function handleLogout() {
     await fetch("/api/admin/auth/login", { method: "DELETE" });
     router.push("/admin/login");
@@ -100,9 +101,19 @@ export function AdminShell({ children, admin }: AdminShellProps) {
       {/* Top Header Navigation */}
       <div className="border-b border-border bg-surface">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Admin Panel</p>
-            <p className="font-display text-lg font-medium text-foreground">{SITE_NAME}</p>
+          <div className="flex items-center gap-3 select-none">
+            <div className="relative h-10 w-10 shrink-0">
+              <Image
+                src="/emblem.png"
+                alt="PV Motors Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <div>
+              <p className="text-[9px] uppercase tracking-[0.25em] text-muted font-bold leading-none">Admin Panel</p>
+              <p className="font-display text-sm font-medium text-foreground mt-1 leading-none">PV Motors</p>
+            </div>
           </div>
           <div className="flex items-center gap-5">
             {/* Real-time Notifications Bell indicator */}

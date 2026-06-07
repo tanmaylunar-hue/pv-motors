@@ -1,4 +1,5 @@
 import { ArrowRight, ArrowDown } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Numeric } from "@/components/ui/Numeric";
 import { SITE_TAGLINE } from "@/lib/constants";
@@ -11,7 +12,16 @@ export function Hero() {
       <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl">
           <div className="animate-fade-in mb-8 flex items-center gap-4">
-            <div className="h-px w-12 animate-line-grow bg-foreground" />
+            <div className="relative h-6 w-6 shrink-0">
+              <Image
+                src="/emblem.png"
+                alt="PV Motors Logo"
+                fill
+                priority
+                className="object-contain filter grayscale opacity-70"
+              />
+            </div>
+            <div className="h-px w-8 animate-line-grow bg-foreground/30" />
             <p className="text-xs font-medium uppercase tracking-[0.3em] text-muted">
               {SITE_TAGLINE}
             </p>

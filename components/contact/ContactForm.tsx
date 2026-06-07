@@ -221,14 +221,18 @@ export function ContactForm() {
     return (
       <Card className="text-center">
         <div className="py-8">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-border">
-            <Send className="h-5 w-5 text-foreground" />
+          <div className="mx-auto mb-6 relative h-16 w-16">
+            <img
+              src="/emblem.png"
+              alt="PV Motors Logo"
+              className="h-full w-full object-contain"
+            />
           </div>
           <h3 className="font-display text-xl font-medium text-foreground">
             Enquiry Submitted
           </h3>
           <p className="mt-2 text-sm text-muted">
-            Our team will contact you within 24 hours.
+            Thank you for choosing PV Motors. Our team will contact you within 24 hours.
           </p>
           {whatsappUrl && (
             <Button
