@@ -427,6 +427,15 @@ export function VehicleForm({ variantId, initialValues }: VehicleFormProps) {
     }));
   }
 
+  function makeCover(index: number) {
+    setForm((current) => {
+      const newImages = [...current.images];
+      const target = newImages.splice(index, 1)[0];
+      newImages.unshift(target);
+      return { ...current, images: newImages };
+    });
+  }
+
   function moveImage(index: number, direction: "left" | "right") {
     setForm((current) => {
       const newImages = [...current.images];
@@ -908,6 +917,16 @@ export function VehicleForm({ variantId, initialValues }: VehicleFormProps) {
                                 >
                                   <ArrowRight className="h-3.5 w-3.5" />
                                 </button>
+                                {index > 0 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => makeCover(index)}
+                                    className="ml-1 text-[9px] font-bold text-muted hover:text-foreground uppercase tracking-widest border border-border px-1 py-0.5 bg-background"
+                                    title="Set as Cover Image"
+                                  >
+                                    Cover
+                                  </button>
+                                )}
                               </div>
                               <div className="flex items-center gap-1">
                                 <label className="cursor-pointer p-1 text-muted hover:text-foreground" title="Replace Image">

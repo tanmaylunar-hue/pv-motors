@@ -374,40 +374,50 @@ export function ContactForm() {
             {previousEnquiries.map((enq) => (
               <div
                 key={enq.id}
-                className="border border-border bg-surface p-5 transition-colors hover:border-foreground/20"
+                className="flex items-center gap-4 border border-border bg-surface p-4 transition-colors hover:border-foreground/20"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <div>
-                    <p className="font-semibold text-foreground">
-                      {enq.vehicleName}{" "}
-                      <span className="font-normal text-muted text-xs">
-                        — {enq.variantName}
+                {/* Brand Logo Emblem */}
+                <div className="relative h-11 w-11 shrink-0 border border-border bg-background p-1.5 rounded-sm">
+                  <img
+                    src="/emblem.png"
+                    alt="PV Motors Logo"
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-foreground truncate">
+                        {enq.vehicleName}{" "}
+                        <span className="font-normal text-muted text-xs">
+                          — {enq.variantName}
+                        </span>
+                      </p>
+                      <p className="text-xs text-muted mt-1">
+                        Submitted on{" "}
+                        {new Date(enq.createdAt).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 self-start sm:self-center">
+                      <span
+                        className={`h-2 w-2 rounded-full ${
+                          enq.status === "new"
+                            ? "bg-emerald-500"
+                            : enq.status === "contacted"
+                            ? "bg-blue-500"
+                            : enq.status === "scheduled"
+                            ? "bg-amber-500"
+                            : "bg-zinc-500"
+                        }`}
+                      />
+                      <span className="text-xs font-semibold capitalize text-foreground">
+                        {enq.status}
                       </span>
-                    </p>
-                    <p className="text-xs text-muted mt-1">
-                      Submitted on{" "}
-                      {new Date(enq.createdAt).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 self-start sm:self-center">
-                    <span
-                      className={`h-2 w-2 rounded-full ${
-                        enq.status === "new"
-                          ? "bg-emerald-500"
-                          : enq.status === "contacted"
-                          ? "bg-blue-500"
-                          : enq.status === "scheduled"
-                          ? "bg-amber-500"
-                          : "bg-zinc-500"
-                      }`}
-                    />
-                    <span className="text-xs font-semibold capitalize text-foreground">
-                      {enq.status}
-                    </span>
+                    </div>
                   </div>
                 </div>
               </div>

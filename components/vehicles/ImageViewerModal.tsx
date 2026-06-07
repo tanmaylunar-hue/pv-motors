@@ -35,6 +35,7 @@ export function ImageViewerModal({
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const touchStartRef = useRef<{ dist: number; scale: number } | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   // Prev / Next actions (declared before useEffect to avoid TDZ / access-before-declaration)
   const handlePrev = useCallback(() => {
@@ -148,12 +149,16 @@ export function ImageViewerModal({
     if (e.touches.length === 2) {
       const dist = getTouchDist(e.touches[0], e.touches[1]);
       touchStartRef.current = { dist, scale };
-    } else if (e.touches.length === 1 && scale > 1) {
-      setIsDragging(true);
-      setDragStart({ 
-        x: e.touches[0].clientX - position.x, 
-        y: e.touches[0].clientY - position.y 
-      });
+    } else if (e.touches.length === 1) {
+      if (scale > 1) {
+        setIsDragging(true);
+        setDragStart({ 
+          x: e.touches[0].clientX - position.x, 
+          y: e.touches[0].clientY - position.y 
+        });
+      } else {
+        touchStartX.current = e.touches[0].clientX;
+      }
     }
   };
 
@@ -185,9 +190,20 @@ export function ImageViewerModal({
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
     touchStartRef.current = null;
     setIsDragging(false);
+
+    if (scale === 1 && touchStartX.current !== null && e.changedTouches[0]) {
+      const diffX = e.changedTouches[0].clientX - touchStartX.current;
+      const swipeThreshold = 50;
+      if (diffX > swipeThreshold) {
+        handlePrev();
+      } else if (diffX < -swipeThreshold) {
+        handleNext();
+      }
+    }
+    touchStartX.current = null;
   };
 
   if (!isOpen) return null;
