@@ -61,6 +61,28 @@ export async function POST(request: Request) {
     );
   }
 
+  const price = Number(body.price);
+  if (isNaN(price) || price <= 0) {
+    return jsonError("Price must be a valid positive number.");
+  }
+
+  const stockQuantity = body.stockQuantity !== undefined ? Number(body.stockQuantity) : 6;
+  if (isNaN(stockQuantity) || stockQuantity < 0) {
+    return jsonError("Stock quantity must be a non-negative number.");
+  }
+
+  if (!body.vehicleName.trim()) {
+    return jsonError("Vehicle name cannot be empty.");
+  }
+
+  if (!body.variantName.trim()) {
+    return jsonError("Variant name cannot be empty.");
+  }
+
+  if (body.images !== undefined && (!Array.isArray(body.images) || body.images.some(img => typeof img !== "string"))) {
+    return jsonError("Images must be an array of strings.");
+  }
+
   const slug = buildVariantSlug(body.vehicleName, body.variantName);
 
   try {

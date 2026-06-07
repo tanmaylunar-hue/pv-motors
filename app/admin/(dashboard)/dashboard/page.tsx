@@ -16,16 +16,18 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const statusVariant = {
-  new: "accent" as const,
-  contacted: "default" as const,
-  shadowed: "outline" as const, // matching enum style if needed
-  scheduled: "accent" as const,
-  closed: "outline" as const,
+const statusVariant: Record<string, "default" | "outline" | "accent"> = {
+  new: "accent",
+  contacted: "default",
+  interested: "default",
+  negotiation: "default",
+  booked: "accent",
+  closed: "outline",
+  scheduled: "outline",
 };
 
 export default async function AdminPage() {
-  const [catalogue, enquiryCount, recentEnquiries, recentActivity] = await Promise.all([
+  const [catalogue, totalEnquiries, recentEnquiries, recentActivity] = await Promise.all([
     getCatalogue(),
     prisma.enquiry.count(),
     prisma.enquiry.findMany({
@@ -37,6 +39,45 @@ export default async function AdminPage() {
       orderBy: { timestamp: "desc" },
     }),
   ]);
+
+  // Calculate New Enquiries count
+  const newEnquiriesCount = await prisma.enquiry.count({
+    where: { status: "new" },
+  });
+
+  // Calculate Daily Leads (leads submitted since today's local midnight)
+  const localToday = new Date();
+  localToday.setHours(0, 0, 0, 0);
+  const dailyLeadsCount = await prisma.enquiry.count({
+    where: {
+      createdAt: {
+        gte: localToday,
+      },
+    },
+  });
+
+  // Calculate Conversion Rate: (bookedEnquiries / totalEnquiries) * 100
+  const bookedEnquiriesCount = await prisma.enquiry.count({
+    where: { status: "booked" },
+  });
+  const conversionRate =
+    totalEnquiries > 0 ? ((bookedEnquiriesCount / totalEnquiries) * 100).toFixed(1) : "0.0";
+
+  // Calculate Popular Vehicles from all enquiries
+  const allEnquiries = await prisma.enquiry.findMany({
+    select: { vehicleName: true, variantName: true },
+  });
+
+  const popularMap = new Map<string, number>();
+  for (const enq of allEnquiries) {
+    const key = `${enq.vehicleName} (${enq.variantName})`;
+    popularMap.set(key, (popularMap.get(key) || 0) + 1);
+  }
+
+  const popularVehicles = Array.from(popularMap.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
 
   return (
     <>
@@ -54,13 +95,13 @@ export default async function AdminPage() {
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Catalogue Entries" value={String(catalogue.length)} icon={Car} />
-        <StatCard title="Enquiries" value={String(enquiryCount)} icon={MessageSquare} />
-        <StatCard title="Featured" value={String(catalogue.filter((i) => i.featured).length)} icon={Users} />
-        <StatCard title="In Stock" value={String(catalogue.filter((i) => i.stockStatus === "in_stock").length)} icon={TrendingUp} />
+        <StatCard title="Total Enquiries" value={String(totalEnquiries)} icon={MessageSquare} />
+        <StatCard title="New Enquiries" value={String(newEnquiriesCount)} icon={MessageSquare} />
+        <StatCard title="Daily Leads" value={String(dailyLeadsCount)} icon={TrendingUp} />
+        <StatCard title="Conversion Rate" value={`${conversionRate}%`} icon={Users} />
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-3">
         {/* Recent Enquiries */}
         <Card>
           <CardHeader>
@@ -83,6 +124,38 @@ export default async function AdminPage() {
                   </div>
                   <Badge variant={statusVariant[enquiry.status] || "default"}>
                     {enquiry.status}
+                  </Badge>
+                </div>
+              ))
+            )}
+          </div>
+        </Card>
+
+        {/* Popular Vehicles */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-neutral-500" />
+              Popular Vehicles
+            </CardTitle>
+          </CardHeader>
+          <div className="space-y-4">
+            {popularVehicles.length === 0 ? (
+              <p className="text-sm text-muted">No enquiry data yet.</p>
+            ) : (
+              popularVehicles.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between border-b border-border/50 pb-4 last:border-0 last:pb-0 text-sm"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono font-bold text-muted text-xs">#{idx + 1}</span>
+                    <div>
+                      <p className="font-medium text-foreground">{item.name}</p>
+                    </div>
+                  </div>
+                  <Badge variant="default">
+                    {item.count} {item.count === 1 ? "lead" : "leads"}
                   </Badge>
                 </div>
               ))
@@ -136,7 +209,7 @@ export default async function AdminPage() {
         </Card>
 
         {/* Quick Actions */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
@@ -162,7 +235,7 @@ export default async function AdminPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">View Enquiries</p>
-                <p className="text-xs text-muted">{enquiryCount} total submissions</p>
+                <p className="text-xs text-muted">{totalEnquiries} total submissions</p>
               </div>
             </Link>
           </div>

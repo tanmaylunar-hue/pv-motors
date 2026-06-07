@@ -11,7 +11,7 @@ type CreateUserBody = {
 
 export async function GET() {
   try {
-    await requireAdmin("owner");
+    await requireAdmin();
     const users = await prisma.adminUser.findMany({
       select: {
         id: true,

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
@@ -87,6 +88,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       `Updated gallery image "${updated.title || "Untitled"}" (category: "${updated.category}")`
     );
 
+    revalidatePath("/", "layout");
     return jsonOk(updated);
   } catch (error) {
     return handlePrismaError(error);
@@ -143,6 +145,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
     await prisma.galleryImage.delete({ where: { id } });
 
+    revalidatePath("/", "layout");
     return jsonOk({ id });
   } catch (error) {
     return handlePrismaError(error);

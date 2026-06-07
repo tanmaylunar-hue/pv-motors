@@ -72,6 +72,32 @@ export async function PATCH(request: Request, context: RouteContext) {
     return jsonError("Request body is required.");
   }
 
+  if (body.price !== undefined) {
+    const price = Number(body.price);
+    if (isNaN(price) || price <= 0) {
+      return jsonError("Price must be a valid positive number.");
+    }
+  }
+
+  if (body.stockQuantity !== undefined) {
+    const stockQuantity = Number(body.stockQuantity);
+    if (isNaN(stockQuantity) || stockQuantity < 0) {
+      return jsonError("Stock quantity must be a non-negative number.");
+    }
+  }
+
+  if (body.vehicleName !== undefined && !body.vehicleName.trim()) {
+    return jsonError("Vehicle name cannot be empty.");
+  }
+
+  if (body.variantName !== undefined && !body.variantName.trim()) {
+    return jsonError("Variant name cannot be empty.");
+  }
+
+  if (body.images !== undefined && (!Array.isArray(body.images) || body.images.some(img => typeof img !== "string"))) {
+    return jsonError("Images must be an array of strings.");
+  }
+
   try {
     const existing = await prisma.variant.findUnique({
       where: { id },

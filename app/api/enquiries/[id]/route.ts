@@ -15,6 +15,8 @@ type UpdateEnquiryBody = {
   variantName?: string;
   variantId?: string | null;
   status?: EnquiryStatus;
+  assignedToId?: string | null;
+  notes?: string;
 };
 
 type RouteContext = {
@@ -47,9 +49,10 @@ export async function GET(_request: Request, context: RouteContext) {
 
 export async function PATCH(request: Request, context: RouteContext) {
   const { id } = await context.params;
+  let admin;
 
   try {
-    await requireAdmin();
+    admin = await requireAdmin();
   } catch (error) {
     if (error instanceof AdminAuthError) {
       return jsonError("Unauthorized.", 401);
@@ -72,24 +75,98 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 
   try {
+    // 1. Fetch current state to track changes
+    const currentEnquiry = await prisma.enquiry.findUnique({
+      where: { id },
+    });
+
+    if (!currentEnquiry) {
+      return jsonError("Enquiry not found.", 404);
+    }
+
+    let historyList: any[] = [];
+    if (currentEnquiry.history && typeof currentEnquiry.history === "object") {
+      if (Array.isArray(currentEnquiry.history)) {
+        historyList = [...currentEnquiry.history];
+      }
+    } else if (typeof currentEnquiry.history === "string") {
+      try {
+        historyList = JSON.parse(currentEnquiry.history);
+      } catch {
+        historyList = [];
+      }
+    }
+
+    let logNeeded = false;
+    let transitionNotes = body.notes?.trim() || "";
+
+    // 2. Track status changes
+    if (body.status && body.status !== currentEnquiry.status) {
+      historyList.push({
+        status: body.status,
+        timestamp: new Date().toISOString(),
+        updatedBy: admin.username,
+        notes: transitionNotes || `Status updated from ${currentEnquiry.status} to ${body.status}`,
+      });
+      logNeeded = true;
+    }
+
+    // 3. Track assignment changes
+    if (body.assignedToId !== undefined && body.assignedToId !== currentEnquiry.assignedToId) {
+      let assigneeName = "None";
+      if (body.assignedToId) {
+        const assigneeUser = await prisma.adminUser.findUnique({
+          where: { id: body.assignedToId },
+          select: { username: true },
+        });
+        if (assigneeUser) {
+          assigneeName = assigneeUser.username;
+        }
+      }
+      historyList.push({
+        status: body.status || currentEnquiry.status,
+        timestamp: new Date().toISOString(),
+        updatedBy: admin.username,
+        notes: `Assigned to: ${assigneeName}`,
+      });
+      logNeeded = true;
+    }
+
+    const updatedData: any = {
+      name: body.name?.trim(),
+      phone: body.phone,
+      address: body.address?.trim(),
+      city: body.city?.trim(),
+      state: body.state?.trim(),
+      vehicleName: body.vehicleName?.trim(),
+      variantName: body.variantName?.trim(),
+      variantId: body.variantId,
+      status: body.status,
+      assignedToId: body.assignedToId,
+    };
+
+    if (logNeeded) {
+      updatedData.history = historyList;
+    }
+
     const enquiry = await prisma.enquiry.update({
       where: { id },
-      data: {
-        name: body.name?.trim(),
-        phone: body.phone,
-        address: body.address?.trim(),
-        city: body.city?.trim(),
-        state: body.state?.trim(),
-        vehicleName: body.vehicleName?.trim(),
-        variantName: body.variantName?.trim(),
-        variantId: body.variantId,
-        status: body.status,
+      data: updatedData,
+      include: {
+        variant: { include: { vehicle: true } },
+        assignedTo: {
+          select: {
+            id: true,
+            username: true,
+            role: true,
+          },
+        },
       },
-      include: { variant: { include: { vehicle: true } } },
     });
+
     await logAdminAction(
       "Update Enquiry",
-      `Updated enquiry for customer "${enquiry.name}" (status: ${enquiry.status})`
+      `Updated enquiry for customer "${enquiry.name}" (status: ${enquiry.status}, assignedTo: ${enquiry.assignedTo?.username || "None"})`
     );
 
     return jsonOk(enquiry);

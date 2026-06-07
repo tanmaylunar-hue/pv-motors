@@ -19,6 +19,9 @@ export type EnquiryPayload = {
   vehicleName: string;
   variantName: string;
   variantId?: string;
+  message?: string;
+  preferredTime?: string;
+  source?: string;
 };
 
 export function buildAdminWhatsAppUrl(enquiry: EnquiryPayload): string {
@@ -34,7 +37,10 @@ export function buildAdminWhatsAppUrl(enquiry: EnquiryPayload): string {
     `State: ${enquiry.state}`,
     `Vehicle: ${enquiry.vehicleName}`,
     `Variant: ${enquiry.variantName}`,
-  ].join("\n");
+    enquiry.preferredTime ? `Preferred Contact Time: ${enquiry.preferredTime}` : "",
+    enquiry.message ? `Message: ${enquiry.message}` : "",
+    enquiry.source ? `Source: ${enquiry.source}` : "",
+  ].filter(line => line !== "").join("\n");
 
   return `https://wa.me/${adminNumber}?text=${encodeURIComponent(text)}`;
 }

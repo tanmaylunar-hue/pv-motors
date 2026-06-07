@@ -30,8 +30,11 @@ enum OrderStatus {
 enum EnquiryStatus {
   new
   contacted
-  scheduled
+  interested
+  negotiation
+  booked
   closed
+  scheduled
 }
 
 model Vehicle {
@@ -88,19 +91,25 @@ model Order {
 }
 
 model Enquiry {
-  id          String        @id @default(cuid())
-  name        String
-  phone       String
-  address     String
-  city        String
-  state       String
-  vehicleName String
-  variantName String
-  status      EnquiryStatus @default(new)
-  variantId   String?
-  variant     Variant?      @relation(fields: [variantId], references: [id], onDelete: SetNull)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  name          String
+  phone         String
+  address       String
+  city          String
+  state         String
+  vehicleName   String
+  variantName   String
+  status        EnquiryStatus @default(new)
+  message       String?
+  preferredTime String?
+  source        String        @default("website")
+  assignedToId  String?
+  assignedTo    AdminUser?    @relation("AssignedEnquiries", fields: [assignedToId], references: [id], onDelete: SetNull)
+  history       Json          @default("[]")
+  variantId     String?
+  variant       Variant?      @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   @@map("enquiries")
 }
@@ -126,17 +135,18 @@ enum AdminRole {
 }
 
 model AdminUser {
-  id        String     @id @default(cuid())
-  username  String     @unique
-  password  String
-  role      AdminRole  @default(manager)
-  disabled  Boolean    @default(false)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  auditLogs AuditLog[]
-  locks            VehicleLock[]
-  drafts           VehicleDraft[]
-  variantHistories VariantHistory[]
+  id                String     @id @default(cuid())
+  username          String     @unique
+  password          String
+  role              AdminRole  @default(manager)
+  disabled          Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  auditLogs         AuditLog[]
+  locks             VehicleLock[]
+  drafts            VehicleDraft[]
+  variantHistories  VariantHistory[]
+  assignedEnquiries Enquiry[]        @relation("AssignedEnquiries")
 
   @@map("admin_users")
 }

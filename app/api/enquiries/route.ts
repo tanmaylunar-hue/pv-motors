@@ -33,7 +33,16 @@ export async function GET(request: Request) {
         status: status ?? undefined,
         variantId: variantId ?? undefined,
       },
-      include: { variant: { include: { vehicle: true } } },
+      include: {
+        variant: { include: { vehicle: true } },
+        assignedTo: {
+          select: {
+            id: true,
+            username: true,
+            role: true,
+          },
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
     return jsonOk(enquiries);
@@ -65,6 +74,41 @@ export async function POST(request: Request) {
     return jsonError("Phone must be a valid 10-digit number.");
   }
 
+  // 1. Spam/Duplicate prevention (Check last 5 minutes)
+  const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+  try {
+    const existing = await prisma.enquiry.findFirst({
+      where: {
+        phone,
+        vehicleName: body.vehicleName.trim(),
+        variantName: body.variantName.trim(),
+        createdAt: {
+          gte: fiveMinutesAgo,
+        },
+      },
+    });
+
+    if (existing) {
+      return jsonError(
+        "An enquiry for this vehicle variant was already submitted recently. We will contact you soon.",
+        400
+      );
+    }
+  } catch (error) {
+    return handlePrismaError(error);
+  }
+
+  // 2. Prepare initial history log
+  const source = body.source?.trim() || "website";
+  const initialHistory = [
+    {
+      status: "new",
+      timestamp: new Date().toISOString(),
+      updatedBy: "System",
+      notes: `Enquiry submitted via website (source: ${source}).`,
+    },
+  ];
+
   try {
     const enquiry = await prisma.enquiry.create({
       data: {
@@ -75,11 +119,28 @@ export async function POST(request: Request) {
         state: body.state.trim(),
         vehicleName: body.vehicleName.trim(),
         variantName: body.variantName.trim(),
-        variantId: body.variantId,
-        status: body.status,
+        variantId: body.variantId || null,
+        status: body.status || "new",
+        message: body.message?.trim() || null,
+        preferredTime: body.preferredTime?.trim() || null,
+        source,
+        history: initialHistory,
       },
       include: { variant: { include: { vehicle: true } } },
     });
+
+    // Create dashboard notification for admins/managers
+    try {
+      await prisma.dashboardNotification.create({
+        data: {
+          role: "manager",
+          type: "enquiry",
+          message: `New Enquiry from ${enquiry.name} for ${enquiry.vehicleName} (${enquiry.variantName})`,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to create dashboard notification:", err);
+    }
 
     const whatsappUrl = buildAdminWhatsAppUrl({
       name: enquiry.name,
@@ -89,6 +150,9 @@ export async function POST(request: Request) {
       state: enquiry.state,
       vehicleName: enquiry.vehicleName,
       variantName: enquiry.variantName,
+      message: enquiry.message || undefined,
+      preferredTime: enquiry.preferredTime || undefined,
+      source: enquiry.source || undefined,
     });
 
     return jsonOk({ enquiry, whatsappUrl }, 201);

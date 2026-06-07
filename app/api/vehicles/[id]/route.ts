@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
@@ -58,6 +59,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       },
       include: { variants: true },
     });
+    revalidatePath("/", "layout");
     return jsonOk(vehicle);
   } catch (error) {
     return handlePrismaError(error);
@@ -78,6 +80,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
   try {
     await prisma.vehicle.delete({ where: { id } });
+    revalidatePath("/", "layout");
     return jsonOk({ id });
   } catch (error) {
     return handlePrismaError(error);

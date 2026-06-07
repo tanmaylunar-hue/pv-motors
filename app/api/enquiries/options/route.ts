@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/db";
 import { getCatalogueEnquiryOptions } from "@/lib/enquiry-options";
 import { handlePrismaError, jsonOk } from "@/lib/api/response";

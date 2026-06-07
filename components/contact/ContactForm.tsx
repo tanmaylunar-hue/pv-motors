@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Input, Select } from "@/components/ui/Input";
+import { Input, Select, Textarea } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { isValidPhone, normalizePhone } from "@/lib/enquiry";
 
@@ -27,6 +27,8 @@ type FormState = {
   vehicleName: string;
   variantName: string;
   variantId: string;
+  message: string;
+  preferredTime: string;
 };
 
 const initialForm: FormState = {
@@ -38,6 +40,8 @@ const initialForm: FormState = {
   vehicleName: "",
   variantName: "",
   variantId: "",
+  message: "",
+  preferredTime: "",
 };
 
 export function ContactForm() {
@@ -50,6 +54,7 @@ export function ContactForm() {
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submittedEnquiry, setSubmittedEnquiry] = useState<any | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("previous_enquiries");
@@ -71,33 +76,48 @@ export function ContactForm() {
           const params = new URLSearchParams(window.location.search);
           const qVehicle = params.get("vehicle");
           const qVariant = params.get("variant");
+          const qAction = params.get("action");
+
+          let matchedVehicle = null;
+          let matchedVariantId = "";
+          let matchedVariantName = "";
 
           if (qVehicle) {
-            const matchedVehicle = data.vehicles.find(
+            matchedVehicle = data.vehicles.find(
               (v: any) => v.name.toLowerCase() === qVehicle.toLowerCase()
             );
-            if (matchedVehicle) {
-              setForm((current) => {
-                let matchedVariantId = "";
-                let matchedVariantName = "";
-                if (qVariant) {
-                  const mv = matchedVehicle.variants.find(
-                    (v: any) => v.name.toLowerCase() === qVariant.toLowerCase()
-                  );
-                  if (mv) {
-                    matchedVariantId = mv.id ?? "";
-                    matchedVariantName = mv.name;
-                  }
-                }
-                return {
-                  ...current,
-                  vehicleName: matchedVehicle.name,
-                  variantName: matchedVariantName,
-                  variantId: matchedVariantId,
-                };
-              });
+            if (matchedVehicle && qVariant) {
+              const mv = matchedVehicle.variants.find(
+                (v: any) => v.name.toLowerCase() === qVariant.toLowerCase()
+              );
+              if (mv) {
+                matchedVariantId = mv.id ?? "";
+                matchedVariantName = mv.name;
+              }
             }
           }
+
+          let prefilledMessage = "";
+          let prefilledPreferredTime = "";
+          if (qAction === "callback") {
+            prefilledMessage = `Please call me back to discuss the ${qVehicle || ""} ${qVariant || ""}.`;
+            prefilledPreferredTime = "Anytime";
+          } else if (qAction === "test-ride") {
+            prefilledMessage = `I'd like to book a test ride for the ${qVehicle || ""} ${qVariant || ""}.`;
+            prefilledPreferredTime = "Evening (4 PM - 7 PM)";
+          } else if (qAction === "enquire") {
+            prefilledMessage = `I am interested in the ${qVehicle || ""} ${qVariant || ""} and would like more details.`;
+            prefilledPreferredTime = "Anytime";
+          }
+
+          setForm((current) => ({
+            ...current,
+            vehicleName: matchedVehicle ? matchedVehicle.name : current.vehicleName,
+            variantName: matchedVariantName || current.variantName,
+            variantId: matchedVariantId || current.variantId,
+            message: prefilledMessage || current.message,
+            preferredTime: prefilledPreferredTime || current.preferredTime,
+          }));
         }
       } catch {
         setSubmitError("Could not load vehicle options. Please refresh and try again.");
@@ -150,6 +170,9 @@ export function ContactForm() {
     setSubmitting(true);
     setSubmitError(null);
 
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get("action") || "website";
+
     try {
       const response = await fetch("/api/enquiries", {
         method: "POST",
@@ -163,6 +186,9 @@ export function ContactForm() {
           vehicleName: form.vehicleName,
           variantName: form.variantName,
           variantId: form.variantId || undefined,
+          message: form.message.trim() || undefined,
+          preferredTime: form.preferredTime || undefined,
+          source,
         }),
       });
 
@@ -174,6 +200,7 @@ export function ContactForm() {
       }
 
       setSubmitted(true);
+      setSubmittedEnquiry(data.enquiry);
       setWhatsappUrl(data.whatsappUrl ?? null);
 
       const newEnquiryRecord = {
@@ -212,12 +239,18 @@ export function ContactForm() {
   function handleReset() {
     setForm(initialForm);
     setSubmitted(false);
+    setSubmittedEnquiry(null);
     setWhatsappUrl(null);
     setErrors({});
     setSubmitError(null);
   }
 
-  if (submitted) {
+  if (submitted && submittedEnquiry) {
+    const responseTime =
+      submittedEnquiry.preferredTime && submittedEnquiry.preferredTime !== "Anytime"
+        ? `During your preferred slot (${submittedEnquiry.preferredTime})`
+        : "Under 2 hours";
+
     return (
       <Card className="text-center">
         <div className="py-8">
@@ -229,24 +262,46 @@ export function ContactForm() {
             />
           </div>
           <h3 className="font-display text-xl font-medium text-foreground">
-            Enquiry Submitted
+            Enquiry Submitted Successfully
           </h3>
           <p className="mt-2 text-sm text-muted">
-            Thank you for choosing PV Motors. Our team will contact you within 24 hours.
+            Thank you for choosing PV Motors. We have received your booking enquiry.
           </p>
+          
+          <div className="my-6 p-5 border border-border bg-surface-elevated/40 text-left max-w-sm mx-auto space-y-3">
+            <div className="flex justify-between items-baseline text-xs border-b border-border/50 pb-2">
+              <span className="text-muted uppercase tracking-wider font-semibold">Enquiry ID</span>
+              <span className="font-mono text-foreground font-semibold select-all">{submittedEnquiry.id}</span>
+            </div>
+            <div className="flex justify-between items-baseline text-xs border-b border-border/50 pb-2">
+              <span className="text-muted uppercase tracking-wider font-semibold">Expected Response</span>
+              <span className="text-foreground font-semibold">{responseTime}</span>
+            </div>
+            <div className="flex justify-between items-baseline text-xs">
+              <span className="text-muted uppercase tracking-wider font-semibold">Email Confirmation</span>
+              <span className="text-emerald-500 font-semibold font-mono">Logged & Queued</span>
+            </div>
+          </div>
+
           {whatsappUrl && (
-            <Button
-              variant="outline"
-              className="mt-6"
-              onClick={() => window.open(whatsappUrl, "_blank", "noopener,noreferrer")}
-            >
-              <MessageCircle className="h-4 w-4" />
-              Send via WhatsApp
+            <div className="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+              <Button
+                variant="outline"
+                onClick={() => window.open(whatsappUrl, "_blank", "noopener,noreferrer")}
+              >
+                <MessageCircle className="h-4 w-4" />
+                Send via WhatsApp
+              </Button>
+              <Button variant="outline" onClick={handleReset}>
+                Submit Another
+              </Button>
+            </div>
+          )}
+          {!whatsappUrl && (
+            <Button variant="outline" className="mt-3" onClick={handleReset}>
+              Submit Another Enquiry
             </Button>
           )}
-          <Button variant="outline" className="mt-3" onClick={handleReset}>
-            Submit Another Enquiry
-          </Button>
         </div>
       </Card>
     );
@@ -356,6 +411,27 @@ export function ContactForm() {
             ))}
           </Select>
 
+          <Select
+            label="Preferred Contact Time (Optional)"
+            name="preferredTime"
+            value={form.preferredTime}
+            onChange={(e) => updateField("preferredTime", e.target.value)}
+          >
+            <option value="">Anytime</option>
+            <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+            <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+            <option value="Evening (4 PM - 7 PM)">Evening (4 PM - 7 PM)</option>
+          </Select>
+
+          <Textarea
+            label="Message (Optional)"
+            name="message"
+            placeholder="Type your message here..."
+            value={form.message}
+            onChange={(e) => updateField("message", e.target.value)}
+            rows={4}
+          />
+
           {submitError && <p className="text-sm text-red-400">{submitError}</p>}
 
           <Button type="submit" className="w-full sm:w-auto" disabled={submitting}>
@@ -409,9 +485,15 @@ export function ContactForm() {
                             ? "bg-emerald-500"
                             : enq.status === "contacted"
                             ? "bg-blue-500"
-                            : enq.status === "scheduled"
-                            ? "bg-amber-500"
-                            : "bg-zinc-500"
+                            : enq.status === "interested"
+                            ? "bg-indigo-500"
+                            : enq.status === "negotiation"
+                            ? "bg-purple-500"
+                            : enq.status === "booked"
+                            ? "bg-teal-500"
+                            : enq.status === "closed"
+                            ? "bg-zinc-500"
+                            : "bg-amber-500"
                         }`}
                       />
                       <span className="text-xs font-semibold capitalize text-foreground">

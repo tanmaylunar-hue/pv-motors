@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getCatalogueFromDatabase } from "@/lib/sync-catalogue";
 import { handlePrismaError, jsonOk } from "@/lib/api/response";
 

@@ -1,9 +1,24 @@
 import { cache } from "react";
 import { getCatalogueFromDatabase } from "@/lib/sync-catalogue";
 import type { CatalogueItem, VehicleCategory } from "@/types/catalogue";
+import fs from "fs/promises";
+import path from "path";
 
 export const getCatalogue = cache(async (): Promise<CatalogueItem[]> => {
-  return getCatalogueFromDatabase();
+  try {
+    return await getCatalogueFromDatabase();
+  } catch (error) {
+    console.error("[getCatalogue] Database connection error, falling back to static JSON:", error);
+    try {
+      const filePath = path.join(process.cwd(), "data", "catalogue.json");
+      const content = await fs.readFile(filePath, "utf-8");
+      const data = JSON.parse(content);
+      return data.catalogue || [];
+    } catch (fsError) {
+      console.error("[getCatalogue] Failed to load static fallback JSON:", fsError);
+      return [];
+    }
+  }
 });
 
 export async function getCatalogueItemBySlug(

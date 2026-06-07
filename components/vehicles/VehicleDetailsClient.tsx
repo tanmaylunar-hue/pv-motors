@@ -240,42 +240,67 @@ export function VehicleDetailsClient({
           </div>
 
           {/* CTA & Actions Bar */}
-          <div className="pt-2 flex flex-col sm:flex-row gap-3">
-            <Button
-              href={`/contact?vehicle=${encodeURIComponent(selectedVariant.vehicle)}&variant=${encodeURIComponent(
-                selectedVariant.variant
-              )}`}
-              className="flex-1"
-              size="lg"
-            >
-              Book Test Ride
-            </Button>
-            
-            {stockLevel.code !== "available" ? (
-              <Button
-                variant="outline"
-                className="flex-1 text-amber-500 border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-500/5"
-                size="lg"
-                onClick={() => {
-                  setNotifySuccess(false);
-                  setNotifyError(null);
-                  setIsNotifyOpen(true);
-                }}
-              >
-                Notify Me
-              </Button>
-            ) : (
+          <div className="pt-2 flex flex-col gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 href={`/contact?vehicle=${encodeURIComponent(selectedVariant.vehicle)}&variant=${encodeURIComponent(
                   selectedVariant.variant
-                )}`}
+                )}&action=enquire`}
+                className="flex-1"
+                size="lg"
+              >
+                Enquire Now
+              </Button>
+              
+              <Button
+                href={`/contact?vehicle=${encodeURIComponent(selectedVariant.vehicle)}&variant=${encodeURIComponent(
+                  selectedVariant.variant
+                )}&action=test-ride`}
                 variant="outline"
                 className="flex-1"
                 size="lg"
               >
-                Get Quote
+                Book Test Ride
               </Button>
-            )}
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                href={`/contact?vehicle=${encodeURIComponent(selectedVariant.vehicle)}&variant=${encodeURIComponent(
+                  selectedVariant.variant
+                )}&action=callback`}
+                variant="outline"
+                className="flex-1 border border-border text-muted hover:text-foreground text-xs font-semibold py-2 h-auto flex items-center justify-center gap-1.5"
+              >
+                Request Callback
+              </Button>
+              
+              {stockLevel.code !== "available" && (
+                <Button
+                  variant="outline"
+                  className="flex-1 text-amber-500 border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-500/5 text-xs font-semibold py-2 h-auto"
+                  onClick={() => {
+                    setNotifySuccess(false);
+                    setNotifyError(null);
+                    setIsNotifyOpen(true);
+                  }}
+                >
+                  Notify Me (Stock Alert)
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Trust Indicators */}
+          <div className="border border-border/60 bg-surface/20 p-4 space-y-2 text-xs">
+            <div className="flex items-center gap-2 text-foreground/90">
+              <span className="text-emerald-500 font-bold">⚡ Response Time:</span>
+              <span className="text-muted">Expected response in under 2 hours.</span>
+            </div>
+            <div className="flex items-center gap-2 text-foreground/90">
+              <span className="text-amber-500 font-bold">⭐ Trust Indicator:</span>
+              <span className="text-muted">4.9/5 average rating from 1,200+ satisfied customers.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -321,6 +346,38 @@ export function VehicleDetailsClient({
                 <span className="text-muted/70">{rev.date}</span>
               </div>
             </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* HAPPY CUSTOMER DELIVERIES SHOWCASE */}
+      <div className="border-t border-border pt-16 space-y-8">
+        <div>
+          <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
+            Recent Showroom Deliveries
+          </h2>
+          <p className="text-sm text-muted mt-1">Real moments of our customers taking home their KOMAKI EVs from PV Motors.</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { url: "/happy-delivery-1.jpg", caption: "Congratulations on taking delivery of your new Komaki EV!" },
+            { url: "/happy-delivery-2.jpg", caption: "PV Motors wishes a safe journey with your new electric ride." },
+            { url: "/happy-delivery-3.jpg", caption: "Happy family taking delivery of their sleek EV scooter." },
+            { url: "/happy-delivery-4.jpg", caption: "Another green vehicle delivered by PV Motors!" },
+          ].map((item, idx) => (
+            <div key={idx} className="group relative aspect-[4/3] bg-surface-elevated overflow-hidden border border-border">
+              <img
+                src={item.url}
+                alt={item.caption}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                onError={(e) => {
+                  e.currentTarget.src = `https://images.unsplash.com/photo-${idx === 0 ? "1518640467707-6811f4a6ab73" : idx === 1 ? "1528605248644-14dd04022da1" : idx === 2 ? "1556740758-90de374c12ad" : "1531538606174-0f90ff5dce83"}?auto=format&fit=crop&w=600&q=80`;
+                }}
+              />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+                <p className="text-[10px] font-semibold text-white leading-tight">{item.caption}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
@@ -79,6 +80,8 @@ export async function POST(request: Request) {
       "Create Gallery Image",
       `Added image to category "${body.category}" (title: ${body.title || "Untitled"})`
     );
+    
+    revalidatePath("/", "layout");
     return jsonOk(galleryImage, 201);
   } catch (error) {
     return handlePrismaError(error);
