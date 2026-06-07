@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -20,8 +21,10 @@ interface ButtonAsButton extends ButtonBaseProps {
 
 interface ButtonAsLink extends ButtonBaseProps {
   href: string;
+  target?: string;
+  rel?: string;
   type?: never;
-  onClick?: never;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   disabled?: never;
 }
 
@@ -29,12 +32,12 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-foreground text-background hover:bg-foreground/90",
+    "bg-black text-white hover:bg-neutral-900 active:scale-[0.98] transition-all duration-300",
   secondary:
-    "bg-surface-elevated text-foreground hover:bg-surface-elevated/80 border border-border",
+    "bg-white border border-black text-black hover:bg-black hover:text-white active:scale-[0.98] transition-all duration-300",
   outline:
-    "border border-foreground/30 text-foreground hover:bg-foreground hover:text-background",
-  ghost: "text-muted hover:text-foreground hover:bg-surface-elevated",
+    "border border-foreground/30 text-foreground hover:bg-foreground hover:text-background active:scale-[0.98] transition-all duration-300",
+  ghost: "text-muted hover:text-foreground hover:bg-surface-elevated transition-all duration-300",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -56,8 +59,9 @@ export function Button({
   const classes = cn(baseStyles, variantStyles[variant], sizeStyles[size], className);
 
   if ("href" in props && props.href) {
+    const { href, target, rel, onClick } = props as ButtonAsLink;
     return (
-      <Link href={props.href} className={classes}>
+      <Link href={href} target={target} rel={rel} onClick={onClick} className={classes}>
         {children}
       </Link>
     );

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
 import type { Prisma, StockStatus } from "@/lib/generated/prisma/client";
 
@@ -32,6 +33,15 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
   const body = await parseJsonBody<CreateVariantBody>(request);
 
   if (!body?.vehicleId || !body.name || !body.slug || !body.tagline || body.price == null) {

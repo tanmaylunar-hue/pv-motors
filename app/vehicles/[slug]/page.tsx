@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowLeft, Battery, Gauge } from "lucide-react";
 import { VehicleSpecs } from "@/components/vehicles/VehicleSpecs";
-import { VehicleImage } from "@/components/vehicles/VehicleImage";
+import { VehicleShowroom } from "@/components/vehicles/VehicleShowroom";
 import { StockBadge } from "@/components/vehicles/StockBadge";
 import { Container, Section } from "@/components/ui/Section";
 import { Badge } from "@/components/ui/Badge";
@@ -60,25 +59,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
 
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
-            <VehicleImage item={item} className="aspect-square" priority />
-            {item.images.length > 1 && (
-              <div className="mt-4 grid grid-cols-4 gap-2">
-                {item.images.map((src) => (
-                  <div
-                    key={src}
-                    className="relative aspect-square overflow-hidden border border-border bg-surface"
-                  >
-                    <Image
-                      src={src}
-                      alt={`${item.vehicle} view`}
-                      fill
-                      className="object-contain p-2"
-                      sizes="120px"
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+            <VehicleShowroom item={item} className="w-full" />
           </div>
 
           <div>
@@ -127,10 +108,10 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href="/contact" size="lg">
+              <Button href={`/contact?vehicle=${encodeURIComponent(item.vehicle)}&variant=${encodeURIComponent(item.variant)}`} size="lg">
                 Book Test Ride
               </Button>
-              <Button href="/contact" variant="outline" size="lg">
+              <Button href={`/contact?vehicle=${encodeURIComponent(item.vehicle)}&variant=${encodeURIComponent(item.variant)}`} variant="outline" size="lg">
                 Get Quote
               </Button>
             </div>

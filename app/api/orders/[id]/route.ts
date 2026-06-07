@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
+import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
+import { logAdminAction } from "@/lib/audit-logs";
 import type { OrderStatus } from "@/lib/generated/prisma/client";
 
 type UpdateOrderBody = {
@@ -19,6 +21,8 @@ export async function GET(_request: Request, context: RouteContext) {
   const { id } = await context.params;
 
   try {
+    await requireAdmin();
+
     const order = await prisma.order.findUnique({
       where: { id },
       include: { variant: { include: { vehicle: true } } },
@@ -30,12 +34,25 @@ export async function GET(_request: Request, context: RouteContext) {
 
     return jsonOk(order);
   } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
     return handlePrismaError(error);
   }
 }
 
 export async function PATCH(request: Request, context: RouteContext) {
   const { id } = await context.params;
+
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
   const body = await parseJsonBody<UpdateOrderBody>(request);
 
   if (!body) {
@@ -55,6 +72,11 @@ export async function PATCH(request: Request, context: RouteContext) {
       },
       include: { variant: { include: { vehicle: true } } },
     });
+    await logAdminAction(
+      "Update Booking",
+      `Updated booking for customer "${order.customerName}" (status: ${order.status})`
+    );
+
     return jsonOk(order);
   } catch (error) {
     return handlePrismaError(error);
@@ -65,7 +87,26 @@ export async function DELETE(_request: Request, context: RouteContext) {
   const { id } = await context.params;
 
   try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
+  try {
+    const target = await prisma.order.findUnique({
+      where: { id },
+      include: { variant: { include: { vehicle: true } } }
+    });
     await prisma.order.delete({ where: { id } });
+    if (target) {
+      await logAdminAction(
+        "Delete Booking",
+        `Deleted booking from customer "${target.customerName}" for "${target.variant.vehicle.name} ${target.variant.name}"`
+      );
+    }
     return jsonOk({ id });
   } catch (error) {
     return handlePrismaError(error);

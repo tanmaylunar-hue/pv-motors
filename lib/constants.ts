@@ -4,9 +4,12 @@ export const SITE_DESCRIPTION =
   "Premium electric vehicles from KOMAKI. Explore scooters, motorcycles, and commercial EVs at PV Motors.";
 
 export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/vehicles", label: "Vehicles" },
-  { href: "/contact", label: "Contact" },
+  { href: "/#home", label: "Home" },
+  { href: "/#featured", label: "Featured Vehicles" },
+  { href: "/#catalogue", label: "Full Catalogue" },
+  { href: "/#reviews", label: "Customer Reviews" },
+  { href: "/#gallery", label: "Gallery" },
+  { href: "/#contact", label: "Contact Us" },
 ] as const;
 
 export const CONTACT_INFO = {

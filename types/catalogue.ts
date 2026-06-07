@@ -17,7 +17,10 @@ export interface CatalogueItem {
   price: number;
   specifications: Specification[];
   images: string[];
+  images360: string[];
+  sequence: number;
   stockStatus: StockStatus;
+  stockQuantity: number;
   featured: boolean;
   highlights: string[];
 }

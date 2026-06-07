@@ -1,5 +1,7 @@
+import { prisma } from "@/lib/db";
+
 export const ADMIN_SESSION_COOKIE = "admin_session";
-export const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
+export const SESSION_MAX_AGE = 60 * 60; // 1 hour in seconds
 
 function getAuthSecret(): string {
   return process.env.AUTH_SECRET ?? process.env.ADMIN_PASSWORD ?? "";
@@ -29,14 +31,14 @@ function timingSafeEqualStrings(a: string, b: string): boolean {
   return mismatch === 0;
 }
 
-export async function createAdminSessionToken(): Promise<string> {
+export async function createAdminSessionToken(userId: string): Promise<string> {
   const secret = getAuthSecret();
   if (!secret) {
     throw new Error("AUTH_SECRET or ADMIN_PASSWORD must be set.");
   }
 
   const expiresAt = Date.now() + SESSION_MAX_AGE * 1000;
-  const payload = `admin:${expiresAt}`;
+  const payload = `${userId}:${expiresAt}`;
   const signature = await hmacSha256(payload, secret);
   return `${payload}.${signature}`;
 }
@@ -55,8 +57,21 @@ export async function verifyAdminSessionToken(
   const expected = await hmacSha256(payload, secret);
   if (!timingSafeEqualStrings(expected, signature)) return false;
 
-  const expiresAt = Number(payload.split(":")[1]);
-  return Number.isFinite(expiresAt) && expiresAt > Date.now();
+  const parts = payload.split(":");
+  if (parts.length !== 2) return false;
+  const [userId, expiresAtStr] = parts;
+  const expiresAt = Number(expiresAtStr);
+  if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) return false;
+
+  // Verify database record
+  try {
+    const admin = await prisma.adminUser.findUnique({
+      where: { id: userId },
+    });
+    return !!admin && !admin.disabled;
+  } catch {
+    return false;
+  }
 }
 
 export function verifyAdminPassword(password: string): boolean {

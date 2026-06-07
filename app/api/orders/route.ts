@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
 import type { OrderStatus } from "@/lib/generated/prisma/client";
 
@@ -12,6 +13,15 @@ type CreateOrderBody = {
 };
 
 export async function GET(request: Request) {
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
   const { searchParams } = new URL(request.url);
   const variantId = searchParams.get("variantId");
   const status = searchParams.get("status") as OrderStatus | null;

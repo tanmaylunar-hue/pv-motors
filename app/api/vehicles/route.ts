@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
 import type { VehicleCategory } from "@/lib/generated/prisma/client";
 
@@ -15,11 +16,21 @@ export async function GET() {
     });
     return jsonOk(vehicles);
   } catch (error) {
+    console.error("[GET /api/vehicles] Server error:", error);
     return handlePrismaError(error);
   }
 }
 
 export async function POST(request: Request) {
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
   const body = await parseJsonBody<CreateVehicleBody>(request);
 
   if (!body?.name || !body.category) {

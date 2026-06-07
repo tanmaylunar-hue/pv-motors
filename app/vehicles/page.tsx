@@ -1,15 +1,5 @@
-import { getCatalogue } from "@/lib/catalogue-server";
-import { VehiclesCatalog } from "@/components/vehicles/VehiclesCatalog";
-import { Container, Section } from "@/components/ui/Section";
+import { redirect } from "next/navigation";
 
-export default async function VehiclesPage() {
-  const catalogue = await getCatalogue();
-
-  return (
-    <Section>
-      <Container>
-        <VehiclesCatalog items={catalogue} />
-      </Container>
-    </Section>
-  );
+export default function VehiclesPage() {
+  redirect("/#catalogue");
 }

@@ -1,10 +1,11 @@
+import { cache } from "react";
 import catalogueData from "@/data/catalogue.json";
 import { getCatalogueFromDatabase } from "@/lib/sync-catalogue";
 import type { CatalogueItem, VehicleCategory } from "@/types/catalogue";
 
 const fallbackCatalogue = catalogueData.catalogue as CatalogueItem[];
 
-export async function getCatalogue(): Promise<CatalogueItem[]> {
+export const getCatalogue = cache(async (): Promise<CatalogueItem[]> => {
   try {
     const fromDb = await getCatalogueFromDatabase();
     if (fromDb.length > 0) return fromDb;
@@ -12,7 +13,7 @@ export async function getCatalogue(): Promise<CatalogueItem[]> {
     // fall back to bundled JSON
   }
   return fallbackCatalogue;
-}
+});
 
 export async function getCatalogueItemBySlug(
   slug: string

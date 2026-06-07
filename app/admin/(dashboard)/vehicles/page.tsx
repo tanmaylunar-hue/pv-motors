@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus } from "lucide-react";
 import { AdminVehicleTable } from "@/components/admin/AdminVehicleTable";
+import { ErrorBoundary } from "@/components/admin/ErrorBoundary";
 import { SectionHeader } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 
@@ -25,7 +26,9 @@ export default function AdminVehiclesPage() {
         </Button>
       </div>
 
-      <AdminVehicleTable />
+      <ErrorBoundary>
+        <AdminVehicleTable />
+      </ErrorBoundary>
     </>
   );
 }

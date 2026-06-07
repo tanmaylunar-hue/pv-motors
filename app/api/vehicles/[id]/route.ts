@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
 import type { VehicleCategory } from "@/lib/generated/prisma/client";
 
@@ -32,6 +33,16 @@ export async function GET(_request: Request, context: RouteContext) {
 
 export async function PATCH(request: Request, context: RouteContext) {
   const { id } = await context.params;
+
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
   const body = await parseJsonBody<UpdateVehicleBody>(request);
 
   if (!body || (body.name == null && body.category == null)) {
@@ -55,6 +66,15 @@ export async function PATCH(request: Request, context: RouteContext) {
 
 export async function DELETE(_request: Request, context: RouteContext) {
   const { id } = await context.params;
+
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
 
   try {
     await prisma.vehicle.delete({ where: { id } });

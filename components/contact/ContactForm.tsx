@@ -43,6 +43,7 @@ const initialForm: FormState = {
 export function ContactForm() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [vehicles, setVehicles] = useState<VehicleOption[]>([]);
+  const [previousEnquiries, setPreviousEnquiries] = useState<any[]>([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -51,12 +52,52 @@ export function ContactForm() {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
+    const saved = localStorage.getItem("previous_enquiries");
+    if (saved) {
+      try {
+        setPreviousEnquiries(JSON.parse(saved));
+      } catch {
+        // ignore
+      }
+    }
+
     async function loadOptions() {
       try {
         const response = await fetch("/api/enquiries/options");
         const data = await response.json();
         if (response.ok && Array.isArray(data.vehicles)) {
           setVehicles(data.vehicles);
+
+          const params = new URLSearchParams(window.location.search);
+          const qVehicle = params.get("vehicle");
+          const qVariant = params.get("variant");
+
+          if (qVehicle) {
+            const matchedVehicle = data.vehicles.find(
+              (v: any) => v.name.toLowerCase() === qVehicle.toLowerCase()
+            );
+            if (matchedVehicle) {
+              setForm((current) => {
+                let matchedVariantId = "";
+                let matchedVariantName = "";
+                if (qVariant) {
+                  const mv = matchedVehicle.variants.find(
+                    (v: any) => v.name.toLowerCase() === qVariant.toLowerCase()
+                  );
+                  if (mv) {
+                    matchedVariantId = mv.id ?? "";
+                    matchedVariantName = mv.name;
+                  }
+                }
+                return {
+                  ...current,
+                  vehicleName: matchedVehicle.name,
+                  variantName: matchedVariantName,
+                  variantId: matchedVariantId,
+                };
+              });
+            }
+          }
         }
       } catch {
         setSubmitError("Could not load vehicle options. Please refresh and try again.");
@@ -135,6 +176,29 @@ export function ContactForm() {
       setSubmitted(true);
       setWhatsappUrl(data.whatsappUrl ?? null);
 
+      const newEnquiryRecord = {
+        id: data.enquiry.id,
+        name: form.name.trim(),
+        phone: normalizePhone(form.phone),
+        vehicleName: form.vehicleName,
+        variantName: form.variantName,
+        status: data.enquiry.status ?? "new",
+        createdAt: data.enquiry.createdAt || new Date().toISOString(),
+      };
+
+      const savedList = localStorage.getItem("previous_enquiries");
+      let currentList = [];
+      if (savedList) {
+        try {
+          currentList = JSON.parse(savedList);
+        } catch {
+          // ignore
+        }
+      }
+      const updatedList = [newEnquiryRecord, ...currentList];
+      setPreviousEnquiries(updatedList);
+      localStorage.setItem("previous_enquiries", JSON.stringify(updatedList));
+
       if (data.whatsappUrl) {
         window.open(data.whatsappUrl, "_blank", "noopener,noreferrer");
       }
@@ -185,115 +249,168 @@ export function ContactForm() {
   }
 
   return (
-    <Card>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <Input
-          label="Name"
-          name="name"
-          placeholder="Rahul Sharma"
-          value={form.name}
-          onChange={(e) => updateField("name", e.target.value)}
-          error={errors.name}
-          required
-        />
-
-        <Input
-          label="Phone"
-          name="phone"
-          type="tel"
-          inputMode="numeric"
-          maxLength={10}
-          placeholder="9876543210"
-          value={form.phone}
-          onChange={(e) => updateField("phone", e.target.value.replace(/\D/g, "").slice(0, 10))}
-          error={errors.phone}
-          required
-        />
-
-        <Input
-          label="Address"
-          name="address"
-          placeholder="House no., street, locality"
-          value={form.address}
-          onChange={(e) => updateField("address", e.target.value)}
-          error={errors.address}
-          required
-        />
-
-        <div className="grid gap-5 sm:grid-cols-2">
+    <>
+      <Card>
+        <form onSubmit={handleSubmit} className="space-y-5">
           <Input
-            label="City"
-            name="city"
-            placeholder="Noida"
-            value={form.city}
-            onChange={(e) => updateField("city", e.target.value)}
-            error={errors.city}
+            label="Name"
+            name="name"
+            placeholder="Rahul Sharma"
+            value={form.name}
+            onChange={(e) => updateField("name", e.target.value)}
+            error={errors.name}
             required
           />
+
           <Input
-            label="State"
-            name="state"
-            placeholder="Uttar Pradesh"
-            value={form.state}
-            onChange={(e) => updateField("state", e.target.value)}
-            error={errors.state}
+            label="Phone"
+            name="phone"
+            type="tel"
+            inputMode="numeric"
+            maxLength={10}
+            placeholder="9876543210"
+            value={form.phone}
+            onChange={(e) => updateField("phone", e.target.value.replace(/\D/g, "").slice(0, 10))}
+            error={errors.phone}
             required
           />
+
+          <Input
+            label="Address"
+            name="address"
+            placeholder="House no., street, locality"
+            value={form.address}
+            onChange={(e) => updateField("address", e.target.value)}
+            error={errors.address}
+            required
+          />
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Input
+              label="City"
+              name="city"
+              placeholder="Noida"
+              value={form.city}
+              onChange={(e) => updateField("city", e.target.value)}
+              error={errors.city}
+              required
+            />
+            <Input
+              label="State"
+              name="state"
+              placeholder="Uttar Pradesh"
+              value={form.state}
+              onChange={(e) => updateField("state", e.target.value)}
+              error={errors.state}
+              required
+            />
+          </div>
+
+          <Select
+            label="Vehicle"
+            name="vehicleName"
+            value={form.vehicleName}
+            onChange={(e) => {
+              updateField("vehicleName", e.target.value);
+              updateField("variantName", "");
+              updateField("variantId", "");
+            }}
+            error={errors.vehicleName}
+            disabled={loadingOptions}
+            required
+          >
+            <option value="">
+              {loadingOptions ? "Loading vehicles..." : "Select a vehicle"}
+            </option>
+            {vehicles.map((vehicle) => (
+              <option key={vehicle.id ?? vehicle.name} value={vehicle.name}>
+                {vehicle.name}
+              </option>
+            ))}
+          </Select>
+
+          <Select
+            label="Variant"
+            name="variantName"
+            value={form.variantName}
+            onChange={(e) => {
+              const variant = variantOptions.find((item) => item.name === e.target.value);
+              updateField("variantName", e.target.value);
+              updateField("variantId", variant?.id ?? "");
+            }}
+            error={errors.variantName}
+            disabled={!form.vehicleName || loadingOptions}
+            required
+          >
+            <option value="">
+              {form.vehicleName ? "Select a variant" : "Select a vehicle first"}
+            </option>
+            {variantOptions.map((variant) => (
+              <option key={variant.id ?? variant.name} value={variant.name}>
+                {variant.name}
+              </option>
+            ))}
+          </Select>
+
+          {submitError && <p className="text-sm text-red-400">{submitError}</p>}
+
+          <Button type="submit" className="w-full sm:w-auto" disabled={submitting}>
+            {submitting ? "Submitting..." : "Submit Enquiry"}
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      </Card>
+
+      {previousEnquiries.length > 0 && (
+        <div className="mt-8 space-y-4">
+          <h3 className="font-display text-lg font-medium text-foreground">
+            Your Recent Enquiries
+          </h3>
+          <div className="grid gap-4">
+            {previousEnquiries.map((enq) => (
+              <div
+                key={enq.id}
+                className="border border-border bg-surface p-5 transition-colors hover:border-foreground/20"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div>
+                    <p className="font-semibold text-foreground">
+                      {enq.vehicleName}{" "}
+                      <span className="font-normal text-muted text-xs">
+                        — {enq.variantName}
+                      </span>
+                    </p>
+                    <p className="text-xs text-muted mt-1">
+                      Submitted on{" "}
+                      {new Date(enq.createdAt).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 self-start sm:self-center">
+                    <span
+                      className={`h-2 w-2 rounded-full ${
+                        enq.status === "new"
+                          ? "bg-emerald-500"
+                          : enq.status === "contacted"
+                          ? "bg-blue-500"
+                          : enq.status === "scheduled"
+                          ? "bg-amber-500"
+                          : "bg-zinc-500"
+                      }`}
+                    />
+                    <span className="text-xs font-semibold capitalize text-foreground">
+                      {enq.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <Select
-          label="Vehicle"
-          name="vehicleName"
-          value={form.vehicleName}
-          onChange={(e) => {
-            updateField("vehicleName", e.target.value);
-            updateField("variantName", "");
-            updateField("variantId", "");
-          }}
-          error={errors.vehicleName}
-          disabled={loadingOptions}
-          required
-        >
-          <option value="">
-            {loadingOptions ? "Loading vehicles..." : "Select a vehicle"}
-          </option>
-          {vehicles.map((vehicle) => (
-            <option key={vehicle.id ?? vehicle.name} value={vehicle.name}>
-              {vehicle.name}
-            </option>
-          ))}
-        </Select>
-
-        <Select
-          label="Variant"
-          name="variantName"
-          value={form.variantName}
-          onChange={(e) => {
-            const variant = variantOptions.find((item) => item.name === e.target.value);
-            updateField("variantName", e.target.value);
-            updateField("variantId", variant?.id ?? "");
-          }}
-          error={errors.variantName}
-          disabled={!form.vehicleName || loadingOptions}
-          required
-        >
-          <option value="">
-            {form.vehicleName ? "Select a variant" : "Select a vehicle first"}
-          </option>
-          {variantOptions.map((variant) => (
-            <option key={variant.id ?? variant.name} value={variant.name}>
-              {variant.name}
-            </option>
-          ))}
-        </Select>
-
-        {submitError && <p className="text-sm text-red-400">{submitError}</p>}
-
-        <Button type="submit" className="w-full sm:w-auto" disabled={submitting}>
-          {submitting ? "Submitting..." : "Submit Enquiry"}
-          <Send className="h-4 w-4" />
-        </Button>
-      </form>
-    </Card>
+      )}
+    </>
   );
 }

@@ -12,7 +12,20 @@ function createPrismaClient() {
     throw new Error("DATABASE_URL is not set in environment variables.");
   }
 
-  const adapter = new PrismaPg({ connectionString });
+  // Strip sslmode from the connection string so that pg driver does not override rejectUnauthorized
+  let sanitizedConnectionString = connectionString;
+  if (sanitizedConnectionString.includes("sslmode=")) {
+    sanitizedConnectionString = sanitizedConnectionString
+      .replace(/([\?&])sslmode=[^&]*(&|$)/, "$1")
+      .replace(/[\?&]$/, "");
+  }
+
+  const adapter = new PrismaPg({
+    connectionString: sanitizedConnectionString,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
   return new PrismaClient({ adapter });
 }
 

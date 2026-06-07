@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import {
   buildAdminWhatsAppUrl,
   isValidPhone,
@@ -13,6 +14,15 @@ type CreateEnquiryBody = EnquiryPayload & {
 };
 
 export async function GET(request: Request) {
+  try {
+    await requireAdmin();
+  } catch (error) {
+    if (error instanceof AdminAuthError) {
+      return jsonError("Unauthorized.", 401);
+    }
+    throw error;
+  }
+
   const { searchParams } = new URL(request.url);
   const status = searchParams.get("status") as EnquiryStatus | null;
   const variantId = searchParams.get("variantId");

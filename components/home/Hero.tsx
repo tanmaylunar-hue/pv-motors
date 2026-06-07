@@ -5,7 +5,7 @@ import { SITE_TAGLINE } from "@/lib/constants";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] overflow-hidden bg-grid">
+    <section id="home" className="relative min-h-[90vh] overflow-hidden bg-grid">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
 
       <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">

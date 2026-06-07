@@ -11,6 +11,7 @@ import { SITE_NAME } from "@/lib/constants";
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,7 @@ export function LoginForm() {
       const response = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
@@ -58,6 +59,18 @@ export function LoginForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          <Input
+            label="Username"
+            type="text"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter admin username"
+            required
+            autoComplete="username"
+            autoFocus
+          />
+
           <Input
             label="Password"
             type="password"

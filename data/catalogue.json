@@ -1,55 +1,102 @@
 {
   "catalogue": [
     {
+      "id": "4",
+      "slug": "komaki-tn-95-sport-4-5-kwh",
+      "vehicle": "KOMAKI TN 95",
+      "variant": "Sport 4.5 kWh",
+      "category": "motorcycle",
+      "tagline": "High-performance electric motorcycle",
+      "price": 189999,
+      "specifications": [
+        {
+          "label": "Range",
+          "value": "220 km"
+        },
+        {
+          "label": "Top Speed",
+          "value": "100 km/h"
+        },
+        {
+          "label": "Battery",
+          "value": "4.5 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "5000W BLDC"
+        },
+        {
+          "label": "Charging",
+          "value": "5 hours"
+        },
+        {
+          "label": "Kerb Weight",
+          "value": "118 kg"
+        }
+      ],
+      "images": [
+        "/vehicles/komaki-tn-95-sport.svg"
+      ],
+      "images360": [],
+      "sequence": 0,
+      "stockStatus": "in_stock",
+      "stockQuantity": 6,
+      "featured": true,
+      "highlights": [
+        "Sport-tuned suspension",
+        "Dual disc brakes with CBS",
+        "Sport riding modes",
+        "Fast charging compatible"
+      ]
+    },
+    {
       "id": "1",
-      "slug": "komaki-ranger-pro",
+      "slug": "komaki-ranger-pro-3-2-kwh",
       "vehicle": "KOMAKI Ranger",
       "variant": "Pro 3.2 kWh",
       "category": "scooter",
       "tagline": "Urban agility meets long-range comfort",
       "price": 129999,
       "specifications": [
-        { "label": "Range", "value": "180 km" },
-        { "label": "Top Speed", "value": "80 km/h" },
-        { "label": "Battery", "value": "3.2 kWh Lithium" },
-        { "label": "Motor", "value": "3000W BLDC" },
-        { "label": "Charging", "value": "4 hours" },
-        { "label": "Ground Clearance", "value": "165 mm" }
+        {
+          "label": "Range",
+          "value": "180 km"
+        },
+        {
+          "label": "Top Speed",
+          "value": "80 km/h"
+        },
+        {
+          "label": "Battery",
+          "value": "3.2 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "3000W BLDC"
+        },
+        {
+          "label": "Charging",
+          "value": "4 hours"
+        },
+        {
+          "label": "Ground Clearance",
+          "value": "165 mm"
+        }
       ],
-      "images": ["/vehicles/komaki-ranger-pro.svg", "/vehicles/komaki-ranger-pro-side.svg"],
+      "images": [
+        "/vehicles/komaki-ranger-pro.svg",
+        "/vehicles/komaki-ranger-pro-side.svg"
+      ],
+      "images360": [],
+      "sequence": 1,
       "stockStatus": "in_stock",
+      "stockQuantity": 6,
       "featured": true,
       "highlights": [
         "Regenerative braking",
         "Digital instrument cluster",
         "Tubeless tyres with alloy wheels",
         "USB charging port"
-      ]
-    },
-    {
-      "id": "2",
-      "slug": "komaki-ranger-standard",
-      "vehicle": "KOMAKI Ranger",
-      "variant": "Standard 2.8 kWh",
-      "category": "scooter",
-      "tagline": "Everyday range with premium comfort",
-      "price": 114999,
-      "specifications": [
-        { "label": "Range", "value": "150 km" },
-        { "label": "Top Speed", "value": "75 km/h" },
-        { "label": "Battery", "value": "2.8 kWh Lithium" },
-        { "label": "Motor", "value": "2500W BLDC" },
-        { "label": "Charging", "value": "3.5 hours" },
-        { "label": "Ground Clearance", "value": "165 mm" }
-      ],
-      "images": ["/vehicles/komaki-ranger-standard.svg"],
-      "stockStatus": "low_stock",
-      "featured": false,
-      "highlights": [
-        "Eco & Sport modes",
-        "LED headlamp",
-        "Comfort seat",
-        "Side stand sensor"
       ]
     },
     {
@@ -61,15 +108,39 @@
       "tagline": "Premium styling for the modern commuter",
       "price": 109999,
       "specifications": [
-        { "label": "Range", "value": "150 km" },
-        { "label": "Top Speed", "value": "70 km/h" },
-        { "label": "Battery", "value": "2.8 kWh Lithium" },
-        { "label": "Motor", "value": "2500W BLDC" },
-        { "label": "Charging", "value": "3.5 hours" },
-        { "label": "Ground Clearance", "value": "160 mm" }
+        {
+          "label": "Range",
+          "value": "150 km"
+        },
+        {
+          "label": "Top Speed",
+          "value": "70 km/h"
+        },
+        {
+          "label": "Battery",
+          "value": "2.8 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "2500W BLDC"
+        },
+        {
+          "label": "Charging",
+          "value": "3.5 hours"
+        },
+        {
+          "label": "Ground Clearance",
+          "value": "160 mm"
+        }
       ],
-      "images": ["/vehicles/komaki-venice-deluxe.svg", "/vehicles/komaki-venice-deluxe-side.svg"],
+      "images": [
+        "/vehicles/komaki-venice-deluxe.svg",
+        "/vehicles/komaki-venice-deluxe-side.svg"
+      ],
+      "images360": [],
+      "sequence": 2,
       "stockStatus": "in_stock",
+      "stockQuantity": 6,
       "featured": true,
       "highlights": [
         "LED headlamp & DRLs",
@@ -79,76 +150,67 @@
       ]
     },
     {
-      "id": "4",
-      "slug": "komaki-tn-95-sport",
-      "vehicle": "KOMAKI TN 95",
-      "variant": "Sport 4.5 kWh",
-      "category": "motorcycle",
-      "tagline": "High-performance electric motorcycle",
-      "price": 189999,
-      "specifications": [
-        { "label": "Range", "value": "220 km" },
-        { "label": "Top Speed", "value": "100 km/h" },
-        { "label": "Battery", "value": "4.5 kWh Lithium" },
-        { "label": "Motor", "value": "5000W BLDC" },
-        { "label": "Charging", "value": "5 hours" },
-        { "label": "Kerb Weight", "value": "118 kg" }
-      ],
-      "images": ["/vehicles/komaki-tn-95-sport.svg"],
-      "stockStatus": "in_stock",
-      "featured": true,
-      "highlights": [
-        "Sport-tuned suspension",
-        "Dual disc brakes with CBS",
-        "Sport riding modes",
-        "Fast charging compatible"
-      ]
-    },
-    {
-      "id": "5",
-      "slug": "komaki-mx-3-eco",
-      "vehicle": "KOMAKI MX 3",
-      "variant": "Eco 2.2 kWh",
-      "category": "scooter",
-      "tagline": "Entry-level EV for everyday rides",
-      "price": 89999,
-      "specifications": [
-        { "label": "Range", "value": "120 km" },
-        { "label": "Top Speed", "value": "60 km/h" },
-        { "label": "Battery", "value": "2.2 kWh Lithium" },
-        { "label": "Motor", "value": "2000W BLDC" },
-        { "label": "Charging", "value": "3 hours" },
-        { "label": "Ground Clearance", "value": "155 mm" }
-      ],
-      "images": ["/vehicles/komaki-mx-3-eco.svg"],
-      "stockStatus": "in_stock",
-      "featured": false,
-      "highlights": [
-        "Affordable ownership",
-        "Low maintenance cost",
-        "Comfortable seating",
-        "Eco mode for extended range"
-      ]
-    },
-    {
       "id": "6",
-      "slug": "komaki-loader-pro",
-      "vehicle": "KOMAKI Loader Pro",
-      "variant": "Commercial 5.0 kWh",
+      "slug": "komaki-cat-2-0-eco-lithium-2-7-kwh",
+      "vehicle": "KOMAKI Cat 2.0 Eco",
+      "variant": "Lithium 2.7 Kwh",
       "category": "loader",
       "tagline": "Commercial-grade electric loader",
-      "price": 249999,
+      "price": 84999,
       "specifications": [
-        { "label": "Range", "value": "140 km" },
-        { "label": "Top Speed", "value": "55 km/h" },
-        { "label": "Battery", "value": "5.0 kWh Lithium" },
-        { "label": "Motor", "value": "4000W BLDC" },
-        { "label": "Payload", "value": "350 kg" },
-        { "label": "Charging", "value": "6 hours" }
+        {
+          "label": "Range",
+          "value": "120 km idc"
+        },
+        {
+          "label": "Real Range",
+          "value": "90-95Km"
+        },
+        {
+          "label": "Battery",
+          "value": "2.7 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "3000W BLDC Hub"
+        },
+        {
+          "label": "Payload",
+          "value": "250 kg"
+        },
+        {
+          "label": "Charging",
+          "value": "3-4 hours"
+        },
+        {
+          "label": "Top Speed",
+          "value": "60Km/h"
+        },
+        {
+          "label": "RTO",
+          "value": "Optional"
+        },
+        {
+          "label": "Warranty",
+          "value": "2 Year (20,000 km)"
+        }
       ],
-      "images": ["/vehicles/komaki-loader-pro.svg"],
+      "images": [
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822270/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.33%206.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822291/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.34%206.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822442/pv-motors/vehicles/77.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822312/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.32%204.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822381/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.32.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822697/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.32%201.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822455/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.32%202.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822728/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.32%203.jpg",
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780822736/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.34%208.jpg"
+      ],
+      "images360": [],
+      "sequence": 3,
       "stockStatus": "pre_order",
-      "featured": false,
+      "stockQuantity": 12,
+      "featured": true,
       "highlights": [
         "Heavy-duty chassis",
         "Large cargo bed",
@@ -165,15 +227,38 @@
       "tagline": "Lightweight city commuter",
       "price": 94999,
       "specifications": [
-        { "label": "Range", "value": "110 km" },
-        { "label": "Top Speed", "value": "65 km/h" },
-        { "label": "Battery", "value": "2.4 kWh Lithium" },
-        { "label": "Motor", "value": "2000W BLDC" },
-        { "label": "Charging", "value": "3 hours" },
-        { "label": "Ground Clearance", "value": "158 mm" }
+        {
+          "label": "Range",
+          "value": "110 km"
+        },
+        {
+          "label": "Top Speed",
+          "value": "65 km/h"
+        },
+        {
+          "label": "Battery",
+          "value": "2.4 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "2000W BLDC"
+        },
+        {
+          "label": "Charging",
+          "value": "3 hours"
+        },
+        {
+          "label": "Ground Clearance",
+          "value": "158 mm"
+        }
       ],
-      "images": ["/vehicles/komaki-venice-lite.svg"],
+      "images": [
+        "/vehicles/komaki-venice-lite.svg"
+      ],
+      "images360": [],
+      "sequence": 4,
       "stockStatus": "out_of_stock",
+      "stockQuantity": 0,
       "featured": false,
       "highlights": [
         "Compact design",
@@ -181,6 +266,132 @@
         "Budget-friendly",
         "Low running costs"
       ]
+    },
+    {
+      "id": "5",
+      "slug": "komaki-mx-3-eco-2-2-kwh",
+      "vehicle": "KOMAKI MX 3",
+      "variant": "Eco 2.2 kWh",
+      "category": "scooter",
+      "tagline": "Entry-level EV for everyday rides",
+      "price": 89999,
+      "specifications": [
+        {
+          "label": "Range",
+          "value": "120 km"
+        },
+        {
+          "label": "Top Speed",
+          "value": "60 km/h"
+        },
+        {
+          "label": "Battery",
+          "value": "2.2 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "2000W BLDC"
+        },
+        {
+          "label": "Charging",
+          "value": "3 hours"
+        },
+        {
+          "label": "Ground Clearance",
+          "value": "155 mm"
+        }
+      ],
+      "images": [
+        "/vehicles/komaki-mx-3-eco.svg"
+      ],
+      "images360": [],
+      "sequence": 5,
+      "stockStatus": "in_stock",
+      "stockQuantity": 6,
+      "featured": false,
+      "highlights": [
+        "Affordable ownership",
+        "Low maintenance cost",
+        "Comfortable seating",
+        "Eco mode for extended range"
+      ]
+    },
+    {
+      "id": "2",
+      "slug": "komaki-ranger-standard-2-8-kwh",
+      "vehicle": "KOMAKI Ranger",
+      "variant": "Standard 2.8 kWh",
+      "category": "scooter",
+      "tagline": "Everyday range with premium comfort",
+      "price": 114999,
+      "specifications": [
+        {
+          "label": "Range",
+          "value": "150 km"
+        },
+        {
+          "label": "Top Speed",
+          "value": "75 km/h"
+        },
+        {
+          "label": "Battery",
+          "value": "2.8 kWh Lithium"
+        },
+        {
+          "label": "Motor",
+          "value": "2500W BLDC"
+        },
+        {
+          "label": "Charging",
+          "value": "3.5 hours"
+        },
+        {
+          "label": "Ground Clearance",
+          "value": "165 mm"
+        }
+      ],
+      "images": [
+        "/vehicles/komaki-ranger-standard.svg"
+      ],
+      "images360": [],
+      "sequence": 6,
+      "stockStatus": "low_stock",
+      "stockQuantity": 3,
+      "featured": false,
+      "highlights": [
+        "Eco & Sport modes",
+        "LED headlamp",
+        "Comfort seat",
+        "Side stand sensor"
+      ]
+    },
+    {
+      "id": "cmq2ve8bs0001nktldx09y9hi",
+      "slug": "tanmay-9-5",
+      "vehicle": "Tanmay",
+      "variant": "9.5",
+      "category": "scooter",
+      "tagline": "High Speed",
+      "price": 10000,
+      "specifications": [
+        {
+          "label": "Range",
+          "value": "100 Km"
+        },
+        {
+          "label": "Speed ",
+          "value": "90km"
+        }
+      ],
+      "images": [
+        "https://res.cloudinary.com/df4symbwt/image/upload/v1780781609/pv-motors/vehicles/OIP.webp"
+      ],
+      "images360": [],
+      "sequence": 7,
+      "stockStatus": "in_stock",
+      "stockQuantity": 6,
+      "featured": true,
+      "highlights": []
     }
   ]
 }

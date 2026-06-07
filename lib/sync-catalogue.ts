@@ -11,7 +11,10 @@ export function variantToCatalogueItem(variant: {
   price: number;
   specifications: unknown;
   images: unknown;
+  images360: unknown;
+  sequence: number;
   stockStatus: string;
+  stockQuantity: number;
   featured: boolean;
   highlights: unknown;
   vehicle: { name: string; category: string };
@@ -26,7 +29,10 @@ export function variantToCatalogueItem(variant: {
     price: variant.price,
     specifications: (variant.specifications as Specification[]) ?? [],
     images: (variant.images as string[]) ?? [],
+    images360: (variant.images360 as string[]) ?? [],
+    sequence: variant.sequence ?? 0,
     stockStatus: variant.stockStatus as CatalogueItem["stockStatus"],
+    stockQuantity: variant.stockQuantity,
     featured: variant.featured,
     highlights: (variant.highlights as string[]) ?? [],
   };
@@ -35,7 +41,11 @@ export function variantToCatalogueItem(variant: {
 export async function getCatalogueFromDatabase(): Promise<CatalogueItem[]> {
   const variants = await prisma.variant.findMany({
     include: { vehicle: true },
-    orderBy: [{ vehicle: { name: "asc" } }, { name: "asc" }],
+    orderBy: [
+      { sequence: "asc" },
+      { vehicle: { name: "asc" } },
+      { name: "asc" }
+    ],
   });
 
   return variants.map(variantToCatalogueItem);
