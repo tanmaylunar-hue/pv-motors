@@ -54,6 +54,13 @@ export async function getCatalogueFromDatabase(): Promise<CatalogueItem[]> {
 export async function syncCatalogueFile(): Promise<CatalogueItem[]> {
   const catalogue = await getCatalogueFromDatabase();
   const filePath = path.join(process.cwd(), "data", "catalogue.json");
-  await writeFile(filePath, `${JSON.stringify({ catalogue }, null, 2)}\n`, "utf-8");
+  try {
+    await writeFile(filePath, `${JSON.stringify({ catalogue }, null, 2)}\n`, "utf-8");
+  } catch (err) {
+    console.warn(
+      "[syncCatalogueFile] Non-fatal: Failed to write catalogue.json (expected in read-only hosting environments):",
+      err
+    );
+  }
   return catalogue;
 }
