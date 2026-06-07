@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
@@ -180,6 +181,8 @@ export async function PATCH(request: Request, context: RouteContext) {
     });
 
     const catalogue = await syncCatalogueFile();
+    revalidatePath("/", "layout"); // Revalidate main website cache
+
     await logAdminAction(
       "Update Vehicle",
       `Updated details for vehicle variant "${variant.vehicle.name} ${variant.name}"`
@@ -233,6 +236,8 @@ export async function DELETE(_request: Request, context: RouteContext) {
     });
 
     const catalogue = await syncCatalogueFile();
+    revalidatePath("/", "layout"); // Revalidate main website cache
+
     await logAdminAction(
       "Delete Vehicle",
       `Deleted vehicle entry with ID: ${id}`

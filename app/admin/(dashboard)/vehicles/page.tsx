@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Plus } from "lucide-react";
 import { AdminVehicleTable } from "@/components/admin/AdminVehicleTable";
@@ -27,7 +28,9 @@ export default function AdminVehiclesPage() {
       </div>
 
       <ErrorBoundary>
-        <AdminVehicleTable />
+        <Suspense fallback={<p className="text-sm text-muted">Loading catalogue table...</p>}>
+          <AdminVehicleTable />
+        </Suspense>
       </ErrorBoundary>
     </>
   );

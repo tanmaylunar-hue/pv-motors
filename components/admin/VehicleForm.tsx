@@ -636,7 +636,7 @@ export function VehicleForm({ variantId, initialValues }: VehicleFormProps) {
         await fetch(`/api/admin/catalogue/${variantId}/lock`, { method: "DELETE" });
       }
 
-      router.push("/admin/vehicles");
+      router.push("/admin/vehicles?saved=true");
       router.refresh();
     } catch {
       setError("Save failed.");

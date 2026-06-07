@@ -12,10 +12,13 @@ import { formatPrice, getPrimaryImage } from "@/lib/catalogue-format";
 import { StockBadge } from "@/components/vehicles/StockBadge";
 import { Button } from "@/components/ui/Button";
 import { Numeric } from "@/components/ui/Numeric";
+import { useSearchParams } from "next/navigation";
 
 type SavingState = "idle" | "saving" | "saved" | "error";
 
 export function AdminVehicleTable() {
+  const searchParams = useSearchParams();
+  const [showSavedToast, setShowSavedToast] = useState(false);
   const [items, setItems] = useState<CatalogueItem[]>([]);
   const [originalItems, setOriginalItems] = useState<CatalogueItem[]>([]);
   const [initialItems, setInitialItems] = useState<CatalogueItem[]>([]);
@@ -25,6 +28,14 @@ export function AdminVehicleTable() {
   const [updatingFeaturedId, setUpdatingFeaturedId] = useState<string | null>(null);
   const [savingState, setSavingState] = useState<SavingState>("idle");
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (searchParams.get("saved") === "true") {
+      setShowSavedToast(true);
+      const timer = setTimeout(() => setShowSavedToast(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
   // Drag & Drop State
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -349,6 +360,12 @@ export function AdminVehicleTable() {
 
   return (
     <div className="space-y-4">
+      {showSavedToast && (
+        <div className="flex items-center gap-2 border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 rounded animate-in fade-in select-none">
+          <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+          <span>Vehicle variant saved successfully!</span>
+        </div>
+      )}
       {/* Top Reordering Controls Panel */}
       <div className="flex flex-wrap items-center justify-between gap-4 border border-border bg-surface px-4 py-3 select-none">
         <div className="flex items-center gap-2">

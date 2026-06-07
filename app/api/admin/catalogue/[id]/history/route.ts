@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { requireAdmin, AdminAuthError } from "@/lib/admin-auth";
 import { jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
@@ -128,6 +129,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     });
 
     await syncCatalogueFile();
+    revalidatePath("/", "layout"); // Revalidate main website cache
 
     return jsonOk({ success: true, variant: restoredVariant });
   } catch (error) {

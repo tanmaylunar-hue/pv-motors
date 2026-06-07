@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AdminAuthError, requireAdmin } from "@/lib/admin-auth";
 import { handlePrismaError, jsonError, jsonOk, parseJsonBody } from "@/lib/api/response";
@@ -122,6 +123,8 @@ export async function POST(request: Request) {
     });
 
     const catalogue = await syncCatalogueFile();
+    revalidatePath("/", "layout"); // Revalidate main website cache
+
     await logAdminAction(
       "Create Vehicle",
       `Created vehicle variant "${body.vehicleName} ${body.variantName}"`
@@ -168,6 +171,8 @@ export async function PATCH(request: Request) {
     });
 
     const catalogue = await syncCatalogueFile();
+    revalidatePath("/", "layout"); // Revalidate main website cache
+
     await logAdminAction(
       "Reorder Catalogue",
       `Bulk updated sequencing order for ${body.updates.length} vehicles`
