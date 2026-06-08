@@ -13,6 +13,7 @@ import { Card } from "@/components/ui/Card";
 import { Numeric } from "@/components/ui/Numeric";
 import { formatPrice, getSpecValue, getPrimaryImage } from "@/lib/catalogue-format";
 import { reviews as mockReviews } from "@/lib/reviews";
+import { StockBadge } from "@/components/vehicles/StockBadge";
 
 interface VehicleDetailsClientProps {
   item: CatalogueItem;
@@ -46,12 +47,6 @@ export function VehicleDetailsClient({
   }, [selectedVariant.price]);
 
   // Stock status logic
-  const stockLevel = useMemo(() => {
-    const qty = selectedVariant.stockQuantity;
-    if (qty === 0) return { label: "Out of Stock", color: "bg-red-500/15 text-red-500 border-red-500/20", code: "out" };
-    if (qty <= 5) return { label: `Limited Stock (Only ${qty} left!)`, color: "bg-amber-500/15 text-amber-500 border-amber-500/20", code: "limited" };
-    return { label: "Available", color: "bg-emerald-500/15 text-emerald-500 border-emerald-500/20", code: "available" };
-  }, [selectedVariant.stockQuantity]);
 
   // Specific reviews filter
   const filteredReviews = useMemo(() => {
@@ -123,9 +118,7 @@ export function VehicleDetailsClient({
               <Badge variant="outline" className="uppercase tracking-widest text-[9px]">
                 {selectedVariant.category}
               </Badge>
-              <span className={`inline-flex items-center px-2 py-0.5 border rounded-sm text-xs font-semibold ${stockLevel.color}`}>
-                {stockLevel.label}
-              </span>
+              <StockBadge status={selectedVariant.stockStatus} />
               {selectedVariant.featured && (
                 <span className="inline-flex items-center px-2 py-0.5 border border-black bg-black text-white rounded-sm text-xs font-semibold">
                   Featured
@@ -275,7 +268,7 @@ export function VehicleDetailsClient({
                 Request Callback
               </Button>
               
-              {stockLevel.code !== "available" && (
+              {(selectedVariant.stockStatus === "low_stock" || selectedVariant.stockStatus === "out_of_stock") && (
                 <Button
                   variant="outline"
                   className="flex-1 text-amber-500 border-amber-500/20 hover:border-amber-500/40 hover:bg-amber-500/5 text-xs font-semibold py-2 h-auto"
@@ -418,9 +411,7 @@ export function VehicleDetailsClient({
                         <Badge variant="outline" className="text-[8px] uppercase tracking-wider">
                           {rel.category}
                         </Badge>
-                        <span className="text-[10px] text-emerald-500 font-semibold bg-emerald-500/5 px-2 py-0.5 border border-emerald-500/10">
-                          {rel.stockStatus === "out_of_stock" ? "Out of Stock" : "In Stock"}
-                        </span>
+                        <StockBadge status={rel.stockStatus} />
                       </div>
                       <h3 className="font-display text-xl font-medium text-foreground mt-3 group-hover:text-neutral-700 transition-colors">
                         <Link href={`/vehicles/${rel.slug}`}>{rel.vehicle}</Link>
