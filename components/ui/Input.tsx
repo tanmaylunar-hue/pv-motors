@@ -21,16 +21,16 @@ export function Input({ label, error, className, id, ...props }: InputProps) {
       <input
         id={inputId}
         className={cn(
-          "w-full border border-border bg-background px-4 py-3 text-sm text-foreground",
+          "w-full border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground rounded-none",
           "placeholder:text-muted/50",
-          "focus:border-foreground focus:outline-none",
-          "transition-colors duration-300",
-          error && "border-red-500",
+          "focus:border-black focus:ring-1 focus:ring-black/10 focus:outline-none",
+          "transition-all duration-200",
+          error && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
           className
         )}
         {...props}
       />
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1 font-semibold">{error}</p>}
     </div>
   );
 }
@@ -56,17 +56,17 @@ export function Select({ label, error, className, id, children, ...props }: Sele
       <select
         id={inputId}
         className={cn(
-          "w-full border border-border bg-background px-4 py-3 text-sm text-foreground",
-          "focus:border-foreground focus:outline-none",
-          "transition-colors duration-300",
-          error && "border-red-500",
+          "w-full border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground rounded-none appearance-none",
+          "focus:border-black focus:ring-1 focus:ring-black/10 focus:outline-none",
+          "transition-all duration-200",
+          error && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
           className
         )}
         {...props}
       >
         {children}
       </select>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1 font-semibold">{error}</p>}
     </div>
   );
 }
@@ -92,16 +92,16 @@ export function Textarea({ label, error, className, id, ...props }: TextareaProp
       <textarea
         id={inputId}
         className={cn(
-          "w-full resize-none border border-border bg-background px-4 py-3 text-sm text-foreground",
+          "w-full resize-none border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground rounded-none",
           "placeholder:text-muted/50",
-          "focus:border-foreground focus:outline-none",
-          "transition-colors duration-300",
-          error && "border-red-500",
+          "focus:border-black focus:ring-1 focus:ring-black/10 focus:outline-none",
+          "transition-all duration-200",
+          error && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
           className
         )}
         {...props}
       />
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-500 mt-1 font-semibold">{error}</p>}
     </div>
   );
 }

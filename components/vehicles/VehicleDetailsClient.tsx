@@ -182,7 +182,7 @@ export function VehicleDetailsClient({
                     <button
                       key={v.id}
                       onClick={() => handleVariantChange(v)}
-                      className={`flex flex-col text-left p-4 border transition-all ${
+                      className={`flex flex-col text-left p-4 border transition-all active:scale-[0.985] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
                         isActive
                           ? "border-black bg-surface-elevated ring-1 ring-black"
                           : "border-border bg-surface hover:border-black/50"

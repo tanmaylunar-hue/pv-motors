@@ -1,23 +1,6 @@
 {
   "catalogue": [
     {
-      "id": "cmq44316z001328tlcb32qmwv",
-      "slug": "komaki-cat-mini-commercial-5-0-kwh",
-      "vehicle": "KOMAKI Cat Mini",
-      "variant": "Commercial 5.0 kWh",
-      "category": "scooter",
-      "tagline": "Urban agility",
-      "price": 400000,
-      "specifications": [],
-      "images": [],
-      "images360": [],
-      "sequence": 0,
-      "stockStatus": "in_stock",
-      "stockQuantity": 6,
-      "featured": true,
-      "highlights": []
-    },
-    {
       "id": "6",
       "slug": "komaki-cat-2-0-eco-lithium-2-7-kwh",
       "vehicle": "KOMAKI Cat 2.0 Eco",
@@ -75,7 +58,7 @@
         "https://res.cloudinary.com/df4symbwt/image/upload/v1780822736/pv-motors/vehicles/WhatsApp%20Image%202026-06-07%20at%2014.18.34%208.jpg"
       ],
       "images360": [],
-      "sequence": 1,
+      "sequence": 0,
       "stockStatus": "pre_order",
       "stockQuantity": 11,
       "featured": true,
@@ -85,28 +68,6 @@
         "Fleet-ready telematics",
         "Low running cost"
       ]
-    },
-    {
-      "id": "cmq43xdi9000x28tloka6apbu",
-      "slug": "komaki-cat-mini-eco-1-5-kwh",
-      "vehicle": "KOMAKI Cat Mini",
-      "variant": "Eco 1.5 Kwh",
-      "category": "scooter",
-      "tagline": "Compact electric loader for lighter commercial loads.",
-      "price": 79999,
-      "specifications": [
-        {
-          "label": "Range",
-          "value": "80 km"
-        }
-      ],
-      "images": [],
-      "images360": [],
-      "sequence": 2,
-      "stockStatus": "in_stock",
-      "stockQuantity": 610,
-      "featured": true,
-      "highlights": []
     },
     {
       "id": "cmq2ve8bs0001nktldx09y9hi",
@@ -130,9 +91,48 @@
         "https://res.cloudinary.com/df4symbwt/image/upload/v1780781609/pv-motors/vehicles/OIP.webp"
       ],
       "images360": [],
-      "sequence": 3,
+      "sequence": 1,
       "stockStatus": "pre_order",
       "stockQuantity": 6,
+      "featured": true,
+      "highlights": []
+    },
+    {
+      "id": "cmq44316z001328tlcb32qmwv",
+      "slug": "komaki-cat-mini-commercial-5-0-kwh",
+      "vehicle": "KOMAKI Cat Mini",
+      "variant": "Commercial 5.0 kWh",
+      "category": "scooter",
+      "tagline": "Urban agility",
+      "price": 400000,
+      "specifications": [],
+      "images": [],
+      "images360": [],
+      "sequence": 2,
+      "stockStatus": "in_stock",
+      "stockQuantity": 6,
+      "featured": true,
+      "highlights": []
+    },
+    {
+      "id": "cmq43xdi9000x28tloka6apbu",
+      "slug": "komaki-cat-mini-eco-1-5-kwh",
+      "vehicle": "KOMAKI Cat Mini",
+      "variant": "Eco 1.5 Kwh",
+      "category": "scooter",
+      "tagline": "Compact electric loader for lighter commercial loads.",
+      "price": 79999,
+      "specifications": [
+        {
+          "label": "Range",
+          "value": "80 km"
+        }
+      ],
+      "images": [],
+      "images360": [],
+      "sequence": 3,
+      "stockStatus": "in_stock",
+      "stockQuantity": 610,
       "featured": true,
       "highlights": []
     }

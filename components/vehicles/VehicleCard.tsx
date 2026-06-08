@@ -24,14 +24,17 @@ export function VehicleCard({ item, variant = "default" }: VehicleCardProps) {
 
   if (variant === "minimal") {
     return (
-      <Link href={`/vehicles/${item.slug}`} className="group block h-full bg-background">
+      <Link
+        href={`/vehicles/${item.slug}`}
+        className="group block h-full bg-background border border-border/40 hover:border-border hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] hover:-translate-y-0.5 transition-all duration-300"
+      >
         <div className="flex h-full flex-col p-6 sm:p-8">
-          <div className="relative mb-6 aspect-[4/3] overflow-hidden border border-border bg-surface transition-colors duration-500 group-hover:border-foreground/20">
+          <div className="relative mb-6 aspect-[4/3] overflow-hidden border border-border bg-surface transition-colors duration-300 group-hover:border-black/15">
             <Image
               src={getPrimaryImage(item)}
               alt={`${item.vehicle} ${item.variant}`}
               fill
-              className="object-contain p-4"
+              className="object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
@@ -42,11 +45,13 @@ export function VehicleCard({ item, variant = "default" }: VehicleCardProps) {
             {item.featured && <Badge variant="accent">Featured</Badge>}
           </div>
 
-          <h3 className="font-display text-xl font-medium text-foreground transition-colors duration-300 group-hover:text-muted">
+          <h3 className="font-display text-xl font-medium text-foreground transition-colors duration-300 group-hover:text-neutral-700 min-h-[28px] line-clamp-1">
             {item.vehicle}
           </h3>
-          <p className="mt-1 text-sm text-muted">{item.variant}</p>
-          <p className="mt-2 line-clamp-2 text-sm text-muted">{item.tagline}</p>
+          <p className="mt-1 text-sm text-muted line-clamp-1">{item.variant}</p>
+          <p className="mt-2 line-clamp-2 text-sm text-muted min-h-[40px] italic">
+            {item.tagline}
+          </p>
 
           <div className="mt-4 flex items-center gap-4 text-xs text-muted">
             {range && (
@@ -77,12 +82,12 @@ export function VehicleCard({ item, variant = "default" }: VehicleCardProps) {
   return (
     <Link href={`/vehicles/${item.slug}`} className="group block">
       <Card hover className="h-full">
-        <div className="relative mb-4 aspect-[16/10] overflow-hidden border border-border bg-surface">
+        <div className="relative mb-4 aspect-[16/10] overflow-hidden border border-border bg-surface transition-colors duration-300 group-hover:border-black/15">
           <Image
             src={getPrimaryImage(item)}
             alt={`${item.vehicle} ${item.variant}`}
             fill
-            className="object-contain p-4"
+            className="object-contain p-4 transition-transform duration-300 group-hover:scale-[1.03]"
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
@@ -93,11 +98,13 @@ export function VehicleCard({ item, variant = "default" }: VehicleCardProps) {
           {item.featured && <Badge variant="accent">Featured</Badge>}
         </div>
 
-        <h3 className="font-display text-lg font-medium text-foreground transition-colors duration-300 group-hover:text-muted">
+        <h3 className="font-display text-lg font-medium text-foreground transition-colors duration-300 group-hover:text-neutral-700 min-h-[28px] line-clamp-1">
           {item.vehicle}
         </h3>
-        <p className="mt-0.5 text-sm text-muted">{item.variant}</p>
-        <p className="mt-1 line-clamp-2 text-sm text-muted">{item.tagline}</p>
+        <p className="mt-0.5 text-sm text-muted line-clamp-1">{item.variant}</p>
+        <p className="mt-1 line-clamp-2 text-sm text-muted min-h-[40px] italic">
+          {item.tagline}
+        </p>
 
         <div className="mt-4 flex items-center gap-4 text-sm text-muted">
           {range && (

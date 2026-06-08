@@ -6,26 +6,32 @@ import { reviews } from "@/lib/reviews";
 
 function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
   return (
-    <div className="w-[340px] shrink-0 border border-border bg-surface p-8 sm:w-[380px]">
-      <Quote className="mb-4 h-6 w-6 text-muted/40" />
-      <p className="mb-6 text-sm leading-relaxed text-muted">{review.text}</p>
-      <div className="flex gap-1">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={`h-3.5 w-3.5 ${
-              i < review.rating
-                ? "fill-foreground text-foreground"
-                : "text-border"
-            }`}
-          />
-        ))}
-      </div>
-      <div className="mt-4 border-t border-border pt-4">
-        <p className="text-sm font-medium text-foreground">{review.name}</p>
-        <p className="mt-0.5 text-xs text-muted">
-          {review.vehicle} &middot; {review.location}
+    <div className="w-[340px] shrink-0 border border-border bg-background p-8 sm:w-[380px] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] hover:border-black/15 flex flex-col justify-between">
+      <div>
+        <Quote className="mb-4 h-6 w-6 text-muted/20" />
+        <p className="mb-6 text-sm leading-relaxed text-muted font-normal italic">
+          &ldquo;{review.text}&rdquo;
         </p>
+      </div>
+      <div>
+        <div className="flex gap-1 mb-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Star
+              key={i}
+              className={`h-3.5 w-3.5 ${
+                i < review.rating
+                  ? "fill-amber-400 text-amber-400"
+                  : "text-neutral-200"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="border-t border-border/60 pt-4">
+          <p className="text-sm font-semibold text-foreground">{review.name}</p>
+          <p className="mt-0.5 text-xs text-muted/80 uppercase tracking-wider text-[10px]">
+            {review.vehicle} &middot; {review.location}
+          </p>
+        </div>
       </div>
     </div>
   );

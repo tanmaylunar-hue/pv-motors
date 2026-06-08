@@ -12,25 +12,42 @@ export default function Loading() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background transition-opacity duration-700 ease-in-out select-none">
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background select-none animate-fade-in">
+      {/* Top linear progress bar */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-neutral-100 overflow-hidden">
+        <div 
+          className="h-full bg-black transition-all duration-300"
+          style={{
+            animation: "shimmer-bar 1.5s infinite linear",
+            transformOrigin: "left",
+            width: "50%"
+          }}
+        />
+      </div>
+
       <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes shimmer-bar {
+          0% { transform: translateX(-100%) scaleX(0.5); }
+          50% { transform: translateX(50%) scaleX(1); }
+          100% { transform: translateX(200%) scaleX(0.5); }
+        }
         @keyframes pulse-branding {
           0%, 100% {
-            opacity: 0.35;
-            transform: scale(0.95);
+            opacity: 0.4;
+            transform: scale(0.96);
           }
           50% {
             opacity: 1;
-            transform: scale(1.05);
+            transform: scale(1.02);
           }
         }
         .animate-pulse-branding {
-          animation: pulse-branding 2s ease-in-out infinite;
+          animation: pulse-branding 1.5s ease-in-out infinite;
         }
       `}} />
       
       <div className="flex flex-col items-center">
-        <div className="relative h-20 w-20 animate-pulse-branding">
+        <div className="relative h-16 w-16 animate-pulse-branding">
           <img
             src="/emblem.png"
             alt="PV Motors Logo"
@@ -38,13 +55,12 @@ export default function Loading() {
           />
         </div>
         
-        <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.3em] text-muted animate-pulse">
+        <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.25em] text-foreground">
           PV Motors
         </p>
         
-        {/* Authorised Dealer small subtitle */}
-        <p className="mt-1 text-[8px] uppercase tracking-widest text-muted/60">
-          Authorised Dealer of KOMAKI
+        <p className="mt-1 text-[8px] uppercase tracking-widest text-muted/65">
+          Authorized Dealer of KOMAKI
         </p>
       </div>
     </div>

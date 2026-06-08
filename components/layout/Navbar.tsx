@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
+import { NAV_LINKS, SITE_NAME, CONTACT_INFO } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 
@@ -138,57 +138,91 @@ export function Navbar() {
 
         <button
           type="button"
-          className="p-2 text-muted transition-colors hover:text-foreground lg:hidden"
+          className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 text-muted transition-colors hover:text-foreground lg:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={cn(
-          "overflow-hidden border-t border-border bg-background transition-all duration-500 lg:hidden",
-          mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 border-t-0"
-        )}
-      >
-        <div className="space-y-1 px-4 py-4">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={(e) => {
-                handleLinkClick(e, link.href);
-                if (!link.href.startsWith("/#") || pathname !== "/") {
+      {/* Premium Mobile Side Drawer Menu */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop Blur Overlay */}
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setMobileOpen(false)}
+          />
+
+          {/* Sliding Drawer Container */}
+          <div className="fixed right-0 top-0 bottom-0 z-50 w-4/5 max-w-xs bg-background border-l border-border p-6 shadow-2xl flex flex-col justify-between animate-slide-in-right">
+            <div>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-5 border-b border-border/55">
+                <div className="relative h-9 w-22 shrink-0">
+                  <Image
+                    src="/logo.jpg"
+                    alt="PV Motors Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="min-h-[40px] min-w-[40px] flex items-center justify-center p-1.5 text-muted hover:text-foreground border border-border rounded-full hover:bg-neutral-50 transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="mt-8 space-y-1">
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => {
+                      handleLinkClick(e, link.href);
+                      setMobileOpen(false);
+                    }}
+                    className={cn(
+                      "block px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] border border-transparent rounded-sm transition-all duration-200",
+                      isLinkActive(link.href)
+                        ? "bg-neutral-50 text-foreground border-l-black border-l-2 font-bold"
+                        : "text-muted hover:text-foreground hover:bg-neutral-50/50"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom Contact & CTA */}
+            <div className="pt-6 border-t border-border/55 space-y-4">
+              <div className="text-[11px] text-muted space-y-1 font-numeric">
+                <p className="font-bold text-foreground uppercase tracking-widest text-[8px] mb-1">Contact Showroom</p>
+                <p className="hover:text-foreground transition-colors"><a href={`tel:${CONTACT_INFO.phone.replace(/\s/g, "")}`}>{CONTACT_INFO.phone}</a></p>
+                <p className="hover:text-foreground transition-colors"><a href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</a></p>
+              </div>
+              <Button
+                href="/#contact"
+                onClick={(e) => {
+                  handleLinkClick(e, "/#contact");
                   setMobileOpen(false);
-                }
-              }}
-              className={cn(
-                "block px-4 py-3 text-xs font-medium uppercase tracking-[0.15em] transition-colors",
-                isLinkActive(link.href)
-                  ? "bg-surface-elevated text-foreground font-semibold"
-                  : "text-muted hover:text-foreground"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="px-4 pt-2">
-            <Button
-              href="/#contact"
-              onClick={(e) => {
-                handleLinkClick(e, "/#contact");
-                if (pathname === "/") setMobileOpen(false);
-              }}
-              className="w-full"
-              size="sm"
-            >
-              Book Ride
-            </Button>
+                }}
+                className="w-full text-xs py-3 uppercase tracking-widest"
+                size="sm"
+              >
+                Book Ride
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }

@@ -95,20 +95,20 @@ export function VehicleShowroom({ item, className }: VehicleShowroomProps) {
         <div className="mb-6 flex gap-2 border-b border-border pb-3">
           <button
             onClick={() => setActiveTab("gallery")}
-            className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all border ${
+            className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all border active:scale-[0.97] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
               activeTab === "gallery"
                 ? "bg-black text-white border-black"
-                : "bg-background text-muted border-border hover:bg-surface-elevated hover:text-foreground"
+                : "bg-background text-muted border-border hover:bg-neutral-50 hover:text-foreground"
             }`}
           >
             Showroom Gallery
           </button>
           <button
             onClick={() => setActiveTab("360")}
-            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all border ${
+            className={`flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all border active:scale-[0.97] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
               activeTab === "360"
                 ? "bg-black text-white border-black"
-                : "bg-background text-muted border-border hover:bg-surface-elevated hover:text-foreground"
+                : "bg-background text-muted border-border hover:bg-neutral-50 hover:text-foreground"
             }`}
           >
             <Box className="h-3.5 w-3.5" />
@@ -149,7 +149,7 @@ export function VehicleShowroom({ item, className }: VehicleShowroomProps) {
                 e.stopPropagation();
                 handlePrev();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm transition-all hover:bg-background active:scale-90"
+              className="absolute left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm transition-all hover:bg-background hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -159,7 +159,7 @@ export function VehicleShowroom({ item, className }: VehicleShowroomProps) {
                 e.stopPropagation();
                 handleNext();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm transition-all hover:bg-background active:scale-90"
+              className="absolute right-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm transition-all hover:bg-background hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black"
               aria-label="Next image"
             >
               <ChevronRight className="h-5 w-5" />
@@ -179,7 +179,7 @@ export function VehicleShowroom({ item, className }: VehicleShowroomProps) {
                 <button
                   key={src}
                   onClick={() => setActiveImageIndex(index)}
-                  className={`relative aspect-square overflow-hidden border transition-all ${
+                  className={`relative aspect-square overflow-hidden border transition-all active:scale-[0.94] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
                     activeImageIndex === index
                       ? "border-black scale-102 ring-1 ring-black"
                       : "border-border opacity-70 hover:opacity-100 hover:border-black/50"

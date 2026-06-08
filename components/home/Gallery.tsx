@@ -91,10 +91,10 @@ export function Gallery({ initialItems }: GalleryProps) {
                 key={cat}
                 type="button"
                 onClick={() => setActiveTab(cat)}
-                className={`px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all border ${
+                className={`px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 border active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
                   activeTab === cat
                     ? "bg-black text-white border-black"
-                    : "text-muted hover:text-foreground hover:bg-surface-elevated bg-background border-border"
+                    : "text-muted hover:text-foreground hover:bg-neutral-50/50 bg-background border-border"
                 }`}
               >
                 {cat === "all" ? "All Showcase" : cat}
@@ -115,14 +115,14 @@ export function Gallery({ initialItems }: GalleryProps) {
             {filteredItems.map((item, index) => (
               <FadeIn key={item.src} delay={index * 50}>
                 <div 
-                  className="relative aspect-[4/3] w-full overflow-hidden group cursor-pointer border border-border bg-surface" 
+                  className="relative aspect-[4/3] w-full overflow-hidden group cursor-pointer border border-border bg-surface hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] transition-all duration-300" 
                   onClick={() => openLightbox(index)}
                 >
                   <Image
                     src={item.src}
                     alt={item.alt}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.035]"
                     sizes="(max-width: 768px) 100vw, 33vw"
                     loading="lazy"
                   />

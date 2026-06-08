@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
 import { isValidPhone, normalizePhone } from "@/lib/enquiry";
+import { cn } from "@/lib/utils";
 
 type VariantOption = {
   id?: string;
@@ -55,6 +56,7 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submittedEnquiry, setSubmittedEnquiry] = useState<any | null>(null);
+  const [shakeForm, setShakeForm] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("previous_enquiries");
@@ -164,6 +166,8 @@ export function ContactForm() {
     const nextErrors = validate();
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
+      setShakeForm(true);
+      setTimeout(() => setShakeForm(false), 250);
       return;
     }
 
@@ -252,9 +256,9 @@ export function ContactForm() {
         : "Under 2 hours";
 
     return (
-      <Card className="text-center">
-        <div className="py-8">
-          <div className="mx-auto mb-6 relative h-16 w-16">
+      <Card className="text-center animate-fade-in shadow-[0_20px_50px_rgba(0,0,0,0.06)] border-neutral-100">
+        <div className="py-8 space-y-6">
+          <div className="mx-auto mb-2 relative h-16 w-16 animate-success-pop">
             <img
               src="/emblem.png"
               alt="PV Motors Logo"
@@ -309,8 +313,8 @@ export function ContactForm() {
 
   return (
     <>
-      <Card>
-        <form onSubmit={handleSubmit} className="space-y-5">
+      <Card className="border border-border bg-surface">
+        <form onSubmit={handleSubmit} className={cn("space-y-5 transition-all duration-300", shakeForm && "animate-shake")}>
           <Input
             label="Name"
             name="name"
@@ -434,8 +438,8 @@ export function ContactForm() {
 
           {submitError && <p className="text-sm text-red-400">{submitError}</p>}
 
-          <Button type="submit" className="w-full sm:w-auto" disabled={submitting}>
-            {submitting ? "Submitting..." : "Submit Enquiry"}
+          <Button type="submit" className="w-full sm:w-auto font-semibold uppercase tracking-wider text-xs" isLoading={submitting}>
+            Submit Enquiry
             <Send className="h-4 w-4" />
           </Button>
         </form>

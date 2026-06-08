@@ -28,20 +28,20 @@ export function Hero() {
           </div>
 
           <h1 className="font-display text-5xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl xl:text-8xl">
-            <span className="animate-fade-up opacity-0-start block animation-delay-100">
+            <span className="animate-fade-up opacity-0-start block animation-delay-75">
               The Future
             </span>
-            <span className="animate-fade-up opacity-0-start block animation-delay-200 text-muted">
+            <span className="animate-fade-up opacity-0-start block animation-delay-150 text-muted">
               Is Electric.
             </span>
           </h1>
 
-          <p className="animate-fade-up opacity-0-start animation-delay-300 mt-8 max-w-lg text-base leading-relaxed text-muted sm:text-lg">
+          <p className="animate-fade-up opacity-0-start animation-delay-200 mt-8 max-w-lg text-base leading-relaxed text-muted sm:text-lg">
             Experience KOMAKI&apos;s finest electric vehicles at PV Motors — where
             premium design meets zero-emission performance.
           </p>
 
-          <div className="animate-fade-up opacity-0-start animation-delay-400 mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="animate-fade-up opacity-0-start animation-delay-250 mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Button href="/vehicles" size="lg">
               Explore Collection
               <ArrowRight className="h-4 w-4" />
@@ -52,7 +52,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="animate-fade-up opacity-0-start animation-delay-500 mt-20 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
+        <div className="animate-fade-up opacity-0-start animation-delay-300 mt-20 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
           {[
             { value: "220 km", label: "Max Range" },
             { value: "100 km/h", label: "Top Speed" },
@@ -78,7 +78,7 @@ export function Hero() {
 
         <a
           href="#featured"
-          className="animate-fade-in opacity-0-start animation-delay-600 mt-16 flex items-center gap-2 text-xs uppercase tracking-widest text-muted transition-colors hover:text-foreground"
+          className="animate-fade-in opacity-0-start animation-delay-300 mt-16 flex items-center gap-2 text-xs uppercase tracking-widest text-muted transition-colors hover:text-foreground"
         >
           <ArrowDown className="h-4 w-4 animate-bounce" />
           Scroll to explore
