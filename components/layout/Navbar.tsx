@@ -91,7 +91,7 @@ export function Navbar() {
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8">
         <Link href="/#home" onClick={(e) => handleLinkClick(e, "/#home")} className="group flex items-center">
           {/* Desktop Logo */}
-          <div className="hidden lg:block relative h-12 w-25 shrink-0 transition-opacity hover:opacity-90">
+          <div className="hidden lg:block relative h-12 w-28 shrink-0 transition-opacity hover:opacity-90">
             <Image
               src="/logo.jpg"
               alt="PV Motors Logo"
@@ -127,7 +127,7 @@ export function Navbar() {
             >
               {link.label}
               {isLinkActive(link.href) && (
-                <span className="absolute bottom-0 left-0 h-[2px] w-full bg-black animate-fade-in" />
+                <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--accent)] animate-fade-in" />
               )}
             </Link>
           ))}
@@ -160,7 +160,7 @@ export function Navbar() {
             <div>
               {/* Header */}
               <div className="flex items-center justify-between pb-5 border-b border-border/55">
-                <div className="relative h-9 w-22 shrink-0">
+                <div className="relative h-9 w-24 shrink-0">
                   <Image
                     src="/logo.jpg"
                     alt="PV Motors Logo"
@@ -170,7 +170,7 @@ export function Navbar() {
                 </div>
                 <button
                   type="button"
-                  className="min-h-[40px] min-w-[40px] flex items-center justify-center p-1.5 text-muted hover:text-foreground border border-border rounded-full hover:bg-neutral-50 transition-colors"
+                  className="min-h-[40px] min-w-[40px] flex items-center justify-center p-1.5 text-muted hover:text-foreground border border-border rounded-full hover:bg-surface-elevated transition-colors"
                   onClick={() => setMobileOpen(false)}
                   aria-label="Close menu"
                 >
@@ -191,8 +191,8 @@ export function Navbar() {
                     className={cn(
                       "block px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] border border-transparent rounded-sm transition-all duration-200",
                       isLinkActive(link.href)
-                        ? "bg-neutral-50 text-foreground border-l-black border-l-2 font-bold"
-                        : "text-muted hover:text-foreground hover:bg-neutral-50/50"
+                        ? "bg-surface-elevated text-foreground border-l-[var(--accent)] border-l-2 font-bold"
+                        : "text-muted hover:text-foreground hover:bg-surface-elevated/50"
                     )}
                   >
                     {link.label}

@@ -12,17 +12,17 @@ export function Hero() {
       <div className="relative mx-auto flex min-h-[90vh] max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl">
           <div className="animate-fade-in mb-8 flex items-center gap-4">
-            <div className="relative h-6 w-6 shrink-0">
+            <div className="relative h-7 w-7 shrink-0">
               <Image
                 src="/emblem.png"
                 alt="PV Motors Logo"
                 fill
                 priority
-                className="object-contain filter grayscale opacity-70"
+                className="object-contain transition-all duration-500 hover:scale-110"
               />
             </div>
-            <div className="h-px w-8 animate-line-grow bg-foreground/30" />
-            <p className="text-xs font-medium uppercase tracking-[0.3em] text-muted">
+            <div className="h-px w-8 animate-line-grow bg-[var(--accent)]/50" />
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent)]">
               {SITE_TAGLINE}
             </p>
           </div>
@@ -31,7 +31,7 @@ export function Hero() {
             <span className="animate-fade-up opacity-0-start block animation-delay-75">
               The Future
             </span>
-            <span className="animate-fade-up opacity-0-start block animation-delay-150 text-muted">
+            <span className="animate-fade-up opacity-0-start block animation-delay-150 text-[var(--accent)]">
               Is Electric.
             </span>
           </h1>
@@ -52,7 +52,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="animate-fade-up opacity-0-start animation-delay-300 mt-20 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
+        <div className="animate-fade-up opacity-0-start animation-delay-300 mt-20 grid grid-cols-2 gap-px border border-border bg-border/60 sm:grid-cols-4 shadow-sm">
           {[
             { value: "220 km", label: "Max Range" },
             { value: "100 km/h", label: "Top Speed" },

@@ -6,12 +6,19 @@ import { VehiclesCatalog } from "@/components/vehicles/VehiclesCatalog";
 import { CustomerReviews } from "@/components/home/CustomerReviews";
 import { Gallery } from "@/components/home/Gallery";
 import { ContactSection } from "@/components/home/ContactSection";
+import { WhyChooseUs } from "@/components/home/WhyChooseUs";
+import { TrustBuilders } from "@/components/home/TrustBuilders";
+import { OurAdvantages } from "@/components/home/OurAdvantages";
 import { getCatalogue } from "@/lib/catalogue-server";
+import { getHomepageSettings } from "@/lib/homepage-settings";
 import { Container, Section } from "@/components/ui/Section";
 import { prisma } from "@/lib/db";
 
 export default async function HomePage() {
-  const catalogue = await getCatalogue();
+  const [catalogue, settings] = await Promise.all([
+    getCatalogue(),
+    getHomepageSettings()
+  ]);
 
   let galleryItems: {
     src: string;
@@ -68,12 +75,15 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <TrustBuilders items={settings.trustBuilders} />
       <FeaturedVehicles />
-      <Section className="border-t border-border bg-background">
+      <WhyChooseUs items={settings.whyChooseUs} />
+      <Section id="catalogue" className="border-t border-border bg-background">
         <Container>
           <VehiclesCatalog items={catalogue} />
         </Container>
       </Section>
+      <OurAdvantages items={settings.ourAdvantages} />
       <CustomerReviews />
       <Gallery initialItems={finalGallery} />
       <ContactSection />

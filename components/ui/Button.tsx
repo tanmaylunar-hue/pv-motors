@@ -35,9 +35,9 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-black text-white hover:bg-neutral-900 border border-black focus-visible:ring-black",
+    "bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent)]/90 border border-[var(--accent)] focus-visible:ring-[var(--accent)] shadow-sm",
   secondary:
-    "bg-transparent border border-black/20 text-black hover:border-black hover:bg-neutral-50/50 focus-visible:ring-black/50",
+    "bg-background border border-border text-foreground hover:bg-surface-elevated focus-visible:ring-foreground/50 shadow-sm",
   outline:
     "border border-foreground/30 text-foreground hover:bg-foreground hover:text-background focus-visible:ring-foreground",
   ghost:

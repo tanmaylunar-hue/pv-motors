@@ -1,0 +1,110 @@
+{
+  "whyChooseUs": [
+    {
+      "id": "authorized_dealer",
+      "title": "Authorized Dealer",
+      "description": "Official KOMAKI EV dealer bringing you genuine products and direct manufacturer warranties.",
+      "icon": "ShieldCheck"
+    },
+    {
+      "id": "trusted_delivery",
+      "title": "Trusted Delivery",
+      "description": "Safe, insured, and tracked shipping of your new electric vehicle straight to your doorstep.",
+      "icon": "Truck"
+    },
+    {
+      "id": "vehicle_guidance",
+      "title": "Vehicle Guidance",
+      "description": "Expert consultations to help you select the exact scooter or motorcycle for your lifestyle.",
+      "icon": "Compass"
+    },
+    {
+      "id": "fast_support",
+      "title": "Fast Support",
+      "description": "Dedicated customer support and quick showroom help whenever you need it.",
+      "icon": "PhoneCall"
+    },
+    {
+      "id": "transparent_pricing",
+      "title": "Transparent Pricing",
+      "description": "No hidden charges, honest breakdowns, and the absolute best value on all premium EV models.",
+      "icon": "FileText"
+    },
+    {
+      "id": "customer_satisfaction",
+      "title": "Customer Satisfaction",
+      "description": "An outstanding customer feedback record with premium post-purchase care and onboarding.",
+      "icon": "Smile"
+    }
+  ],
+  "ourAdvantages": [
+    {
+      "id": "genuine_vehicles",
+      "title": "Genuine Vehicles",
+      "value": "100%",
+      "description": "Verified electric vehicles with direct factory certifications.",
+      "icon": "ShieldAlert"
+    },
+    {
+      "id": "latest_models",
+      "title": "Latest Models",
+      "value": "2026 Ready",
+      "description": "The newest fleet of smart electric vehicles and cargo loader tech.",
+      "icon": "Zap"
+    },
+    {
+      "id": "multiple_variants",
+      "title": "Multiple Variants",
+      "value": "12+",
+      "description": "Diverse range of colors, battery specs, and commercial variants.",
+      "icon": "Layers"
+    },
+    {
+      "id": "easy_enquiry",
+      "title": "Easy Enquiry",
+      "value": "1 Click",
+      "description": "Instant WhatsApp and catalog enquiries answered directly.",
+      "icon": "MessageSquare"
+    },
+    {
+      "id": "fast_response",
+      "title": "Fast Response",
+      "value": "< 15 Mins",
+      "description": "Enquiry responses from our expert dealership team.",
+      "icon": "Clock"
+    },
+    {
+      "id": "local_support",
+      "title": "Local Support",
+      "value": "NCR Region",
+      "description": "Fully staffed local showrooms and authorized service centers.",
+      "icon": "HelpCircle"
+    }
+  ],
+  "trustBuilders": [
+    {
+      "id": "vehicles_delivered",
+      "label": "Vehicles Delivered",
+      "value": 1250,
+      "suffix": "+"
+    },
+    {
+      "id": "satisfied_customers",
+      "label": "Satisfied Customers",
+      "value": 1500,
+      "suffix": "+"
+    },
+    {
+      "id": "response_time",
+      "label": "Avg Response Time",
+      "value": 15,
+      "suffix": "m"
+    },
+    {
+      "id": "years_of_service",
+      "label": "Years of Service",
+      "value": 8,
+      "suffix": ""
+    }
+  ]
+}

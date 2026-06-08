@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { 
   Car, LayoutDashboard, LogOut, MessageSquare, ClipboardList, 
   Image as ImageIcon, Users, ScrollText, CreditCard, Database, 
-  KeyRound, ShieldCheck, User, Bell 
+  KeyRound, ShieldCheck, User, Bell, Settings2 
 } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -82,6 +82,7 @@ export function AdminShell({ children, admin }: AdminShellProps) {
     { href: "/admin/gallery", label: "Gallery", icon: ImageIcon, exact: false },
     { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquare, exact: false },
     { href: "/admin/orders", label: "Bookings", icon: ClipboardList, exact: false },
+    { href: "/admin/homepage-settings", label: "Homepage Settings", icon: Settings2, exact: false },
   ];
 
   // Restricted items only visible and accessible to the Owner

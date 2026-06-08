@@ -1,55 +1,48 @@
-import { Headphones, Shield, Truck, Wrench } from "lucide-react";
+import * as Icons from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Container, Section, SectionHeader } from "@/components/ui/Section";
+import { FadeIn } from "@/components/ui/FadeIn";
+import type { WhyChooseUsItem } from "@/lib/homepage-settings";
 
-const features = [
-  {
-    icon: Shield,
-    title: "Authorized Dealer",
-    description:
-      "Genuine KOMAKI vehicles with full manufacturer warranty and certified parts.",
-  },
-  {
-    icon: Wrench,
-    title: "Expert Service",
-    description:
-      "Trained technicians and dedicated service bays for hassle-free maintenance.",
-  },
-  {
-    icon: Truck,
-    title: "Doorstep Delivery",
-    description:
-      "Home delivery and registration assistance across the NCR region.",
-  },
-  {
-    icon: Headphones,
-    title: "24/7 Support",
-    description:
-      "Round-the-clock roadside assistance and customer care for peace of mind.",
-  },
-];
+interface WhyChooseUsProps {
+  items: WhyChooseUsItem[];
+}
 
-export function WhyChooseUs() {
+export function WhyChooseUs({ items }: WhyChooseUsProps) {
   return (
-    <Section>
+    <Section id="why-choose-us" className="border-t border-border bg-background relative">
       <Container>
-        <SectionHeader
-          eyebrow="Why PV Motors"
-          title="The Premium EV Experience"
-          description="More than a showroom — we're your long-term partner in electric mobility."
-          align="center"
-          className="mx-auto"
-        />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature) => (
-            <Card key={feature.title} hover className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent">
-                <feature.icon className="h-6 w-6" />
-              </div>
-              <h3 className="mb-2 font-semibold text-foreground">{feature.title}</h3>
-              <p className="text-sm leading-relaxed text-muted">{feature.description}</p>
-            </Card>
-          ))}
+        <FadeIn>
+          <SectionHeader
+            eyebrow="Why PV Motors"
+            title="The Premium EV Experience"
+            description="We are more than just a showroom — we are your dedicated lifetime partner in clean electric mobility."
+            align="center"
+            className="mx-auto"
+          />
+        </FadeIn>
+        
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
+          {items.map((feature, i) => {
+            // Resolve the Lucide icon dynamically from the string name
+            const IconComponent = (Icons as any)[feature.icon] || Icons.CheckCircle2;
+
+            return (
+              <FadeIn key={feature.id} delay={i * 100} className="h-full">
+                <Card className="flex flex-col items-center text-center p-8 bg-background border border-border/80 hover:border-[var(--accent)]/30 hover:shadow-[0_8px_30px_rgba(0,0,0,0.025)] hover:-translate-y-0.5 transition-all duration-200 rounded-none group h-full">
+                  <div className="mb-5 flex h-14 w-14 items-center justify-center bg-surface-elevated border border-border/60 text-[var(--accent)] group-hover:bg-[var(--accent)]/10 group-hover:border-[var(--accent)]/30 transition-all duration-200 rounded-none shadow-sm">
+                    <IconComponent className="h-6 w-6" />
+                  </div>
+                  <h3 className="mb-3 text-base font-semibold text-foreground tracking-tight">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs leading-relaxed text-muted">
+                    {feature.description}
+                  </p>
+                </Card>
+              </FadeIn>
+            );
+          })}
         </div>
       </Container>
     </Section>

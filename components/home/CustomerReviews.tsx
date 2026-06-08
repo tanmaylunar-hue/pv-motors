@@ -1,4 +1,4 @@
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, Check } from "lucide-react";
 import { Container, Section, SectionHeader } from "@/components/ui/Section";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Numeric } from "@/components/ui/Numeric";
@@ -6,9 +6,14 @@ import { reviews } from "@/lib/reviews";
 
 function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
   return (
-    <div className="w-[340px] shrink-0 border border-border bg-background p-8 sm:w-[380px] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] hover:border-black/15 flex flex-col justify-between">
+    <div className="w-[340px] shrink-0 border border-border bg-background p-8 sm:w-[380px] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(224,79,22,0.03)] hover:border-[var(--accent)]/30 flex flex-col justify-between">
       <div>
-        <Quote className="mb-4 h-6 w-6 text-muted/20" />
+        <div className="flex justify-between items-start mb-4">
+          <Quote className="h-6 w-6 text-muted/20" />
+          <div className="flex items-center gap-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/15 px-2 py-0.5 text-[8px] uppercase tracking-widest font-semibold">
+            <Check className="h-2.5 w-2.5" /> Verified Buyer
+          </div>
+        </div>
         <p className="mb-6 text-sm leading-relaxed text-muted font-normal italic">
           &ldquo;{review.text}&rdquo;
         </p>
@@ -69,17 +74,24 @@ export function CustomerReviews() {
 
       <Container>
         <FadeIn delay={300}>
-          <div className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-3">
+          <div className="mt-12 grid gap-px border border-border/20 bg-border/20 sm:grid-cols-3">
             {[
               { value: "4.9", label: "Average Rating" },
               { value: "500+", label: "Happy Customers" },
               { value: "98%", label: "Would Recommend" },
             ].map((stat) => (
-              <div key={stat.label} className="bg-surface px-6 py-8 text-center">
+              <div key={stat.label} className="bg-surface-elevated px-6 py-8 text-center flex flex-col justify-center items-center">
                 <Numeric as="p" className="text-3xl font-semibold text-foreground">
                   {stat.value}
                 </Numeric>
-                <p className="mt-1 text-xs uppercase tracking-widest text-muted">
+                {stat.label === "Average Rating" && (
+                  <div className="flex gap-0.5 mt-1">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} className="h-3 w-3 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                )}
+                <p className="mt-2 text-xs uppercase tracking-widest text-muted font-medium">
                   {stat.label}
                 </p>
               </div>

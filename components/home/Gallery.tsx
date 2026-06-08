@@ -91,10 +91,10 @@ export function Gallery({ initialItems }: GalleryProps) {
                 key={cat}
                 type="button"
                 onClick={() => setActiveTab(cat)}
-                className={`px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 border active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
+                className={`px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 border active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                   activeTab === cat
-                    ? "bg-black text-white border-black"
-                    : "text-muted hover:text-foreground hover:bg-neutral-50/50 bg-background border-border"
+                    ? "bg-[var(--accent)] text-[var(--accent-foreground)] border-[var(--accent)] shadow-[0_4px_12px_rgba(224,79,22,0.2)]"
+                    : "text-muted hover:text-foreground hover:bg-surface-elevated bg-background border-border"
                 }`}
               >
                 {cat === "all" ? "All Showcase" : cat}
@@ -115,7 +115,7 @@ export function Gallery({ initialItems }: GalleryProps) {
             {filteredItems.map((item, index) => (
               <FadeIn key={item.src} delay={index * 50}>
                 <div 
-                  className="relative aspect-[4/3] w-full overflow-hidden group cursor-pointer border border-border bg-surface hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(0,0,0,0.03)] transition-all duration-300" 
+                  className="relative aspect-[4/3] w-full overflow-hidden group cursor-pointer border border-border hover:border-[var(--accent)]/30 bg-surface hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(224,79,22,0.04)] transition-all duration-300" 
                   onClick={() => openLightbox(index)}
                 >
                   <Image

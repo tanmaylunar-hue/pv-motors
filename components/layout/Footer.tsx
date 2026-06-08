@@ -18,7 +18,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block transition-opacity hover:opacity-90">
-              <div className="relative h-11 w-23">
+              <div className="relative h-11 w-26">
                 <Image
                   src="/logo.jpg"
                   alt="PV Motors Logo"
