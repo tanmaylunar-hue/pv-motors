@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Container, Section, SectionHeader } from "@/components/ui/Section";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { Button } from "@/components/ui/Button";
@@ -28,7 +29,10 @@ export async function FeaturedVehicles() {
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {featured.map((item, i) => (
               <FadeIn key={item.id} delay={i * 100} className="flex h-full">
-                <div className="flex w-full flex-col border border-border bg-background p-6 transition-all duration-300 hover:shadow-lg group">
+                <Link
+                  href={`/vehicles/${item.slug}`}
+                  className="flex w-full flex-col border border-border bg-background p-6 transition-all duration-300 hover:shadow-lg hover:border-[var(--accent)]/30 group"
+                >
                   {/* Vehicle Image */}
                   <div className="relative mb-6 aspect-[4/3] w-full overflow-hidden border border-border bg-surface">
                     <Image
@@ -49,7 +53,7 @@ export async function FeaturedVehicles() {
                   </div>
 
                   {/* Vehicle Name */}
-                  <h3 className="font-display text-2xl font-medium text-foreground tracking-tight group-hover:text-neutral-700 transition-colors duration-300">
+                  <h3 className="font-display text-2xl font-medium text-foreground tracking-tight group-hover:text-[var(--accent)] transition-colors duration-300">
                     {item.vehicle}
                   </h3>
                   <p className="text-sm text-muted mb-2">{item.variant}</p>
@@ -63,11 +67,11 @@ export async function FeaturedVehicles() {
                         {formatPrice(item.price)}
                       </span>
                     </div>
-                    <Button href={`/vehicles/${item.slug}`} className="w-full justify-center">
+                    <div className="w-full justify-center inline-flex items-center gap-2 font-medium transition-all duration-200 ease-out active:scale-[0.97] min-h-[48px] md:min-h-0 bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent)]/90 border border-[var(--accent)] px-6 py-2.5 text-sm shadow-sm font-sans uppercase tracking-wider">
                       Explore Vehicle
-                    </Button>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </FadeIn>
             ))}
           </div>

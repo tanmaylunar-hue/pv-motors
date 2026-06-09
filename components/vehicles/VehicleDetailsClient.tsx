@@ -390,11 +390,12 @@ export function VehicleDetailsClient({
               const relRange = getSpecValue(rel, "Range");
               const relCover = getPrimaryImage(rel);
               return (
-                <div
+                <Link
                   key={rel.id}
-                  className="group flex flex-col border border-border bg-surface overflow-hidden transition-all hover:border-black/25"
+                  href={`/vehicles/${rel.slug}`}
+                  className="group flex flex-col border border-border bg-surface overflow-hidden transition-all hover:border-[var(--accent)]/30 hover:shadow-lg"
                 >
-                  <Link href={`/vehicles/${rel.slug}`} className="relative aspect-[16/10] w-full bg-surface-elevated overflow-hidden border-b border-border/50">
+                  <div className="relative aspect-[16/10] w-full bg-surface-elevated overflow-hidden border-b border-border/50">
                     <Image
                       src={relCover}
                       alt={`${rel.vehicle} ${rel.variant}`}
@@ -403,7 +404,7 @@ export function VehicleDetailsClient({
                       sizes="(max-width: 768px) 100vw, 30vw"
                       loading="lazy"
                     />
-                  </Link>
+                  </div>
 
                   <div className="p-5 flex-1 flex flex-col justify-between">
                     <div>
@@ -413,8 +414,8 @@ export function VehicleDetailsClient({
                         </Badge>
                         <StockBadge status={rel.stockStatus} />
                       </div>
-                      <h3 className="font-display text-xl font-medium text-foreground mt-3 group-hover:text-neutral-700 transition-colors">
-                        <Link href={`/vehicles/${rel.slug}`}>{rel.vehicle}</Link>
+                      <h3 className="font-display text-xl font-medium text-foreground mt-3 group-hover:text-[var(--accent)] transition-colors">
+                        {rel.vehicle}
                       </h3>
                       <p className="text-xs text-muted mt-1">{rel.variant}</p>
                     </div>
@@ -434,7 +435,7 @@ export function VehicleDetailsClient({
                       )}
                     </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

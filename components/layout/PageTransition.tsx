@@ -14,6 +14,7 @@ export function PageTransition({ children }: PageTransitionProps) {
 
   // Trigger a soft CSS-driven re-mount animation whenever pathname changes
   useEffect(() => {
+    window.scrollTo(0, 0);
     setAnimating(true);
     const timer = setTimeout(() => {
       setAnimating(false);

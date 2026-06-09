@@ -118,6 +118,34 @@ export function ImageViewerModal({
     };
   }, [isOpen, scale]);
 
+  // Register mouse wheel scroll listener for desktop zoom
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !isOpen) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const delta = e.deltaY;
+      setScale((prev) => {
+        let nextScale = prev;
+        if (delta < 0) {
+          nextScale = Math.min(prev + 0.2, 4); // Zoom In
+        } else {
+          nextScale = Math.max(prev - 0.2, 1); // Zoom Out
+        }
+        if (nextScale === 1) {
+          setPosition({ x: 0, y: 0 });
+        }
+        return nextScale;
+      });
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+    };
+  }, [isOpen]);
+
   // Zoom In / Out
   const zoomIn = () => {
     setScale((prev) => Math.min(prev + 0.5, 4));
@@ -257,7 +285,7 @@ export function ImageViewerModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col bg-black/95 backdrop-blur-md transition-all duration-300">
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-black/95 backdrop-blur-md transition-all duration-300 w-screen h-[100dvh] overflow-hidden select-none">
       {/* Top Header Bar */}
       <div className="flex h-14 sm:h-16 w-full items-center justify-between px-6 text-white bg-gradient-to-b from-black/80 to-transparent">
         <span className="text-sm font-mono tracking-wider">
@@ -326,7 +354,7 @@ export function ImageViewerModal({
         <div
           ref={imageRef}
           onDoubleClick={toggleDoubleCheckZoom}
-          className="relative max-h-[75vh] max-w-[85vw] aspect-[4/3] w-full select-none"
+          className="relative w-full h-full select-none"
           style={{
             transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${scale})`,
             transition: isDragging ? "none" : "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
@@ -336,8 +364,8 @@ export function ImageViewerModal({
             src={images[currentIndex]}
             alt="Showroom gallery preview"
             fill
-            className="object-contain pointer-events-none p-2"
-            sizes="(max-width: 1200px) 100vw, 1200px"
+            className="object-contain pointer-events-none p-4"
+            sizes="100vw"
             priority
           />
         </div>
