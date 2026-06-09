@@ -98,7 +98,7 @@ export function OurAdvantages({ items }: OurAdvantagesProps) {
           />
         </FadeIn>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 md:mt-10">
           {items.map((item, i) => {
             // Dynamically resolve icon from Lucide React
             const IconComponent = (Icons as any)[item.icon] || Icons.CheckCircle2;

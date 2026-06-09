@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Container, Section, SectionHeader } from "@/components/ui/Section";
 import { FadeIn } from "@/components/ui/FadeIn";
-import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import { ZoomIn } from "lucide-react";
+import { ImageViewerModal } from "@/components/vehicles/ImageViewerModal";
 
 interface GalleryItem {
   src: string;
@@ -44,33 +45,12 @@ export function Gallery({ initialItems }: GalleryProps) {
     setActiveImageIndex(null);
   };
 
-  const handlePrev = useCallback(() => {
-    if (activeImageIndex === null || filteredItems.length === 0) return;
-    setActiveImageIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : filteredItems.length - 1));
-  }, [activeImageIndex, filteredItems.length]);
-
-  const handleNext = useCallback(() => {
-    if (activeImageIndex === null || filteredItems.length === 0) return;
-    setActiveImageIndex((prev) => (prev !== null && prev < filteredItems.length - 1 ? prev + 1 : 0));
-  }, [activeImageIndex, filteredItems.length]);
-
-  // Keyboard navigation inside lightbox
-  useEffect(() => {
-    if (activeImageIndex === null) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        closeLightbox();
-      } else if (e.key === "ArrowLeft") {
-        handlePrev();
-      } else if (e.key === "ArrowRight") {
-        handleNext();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeImageIndex, handlePrev, handleNext]);
+  const imageUrls = filteredItems.map((item) => item.src);
+  const captions = filteredItems.map((item) => ({
+    title: item.title,
+    tagline: item.tagline,
+    category: item.category,
+  }));
 
   return (
     <Section id="gallery" className="border-t border-border bg-background scroll-mt-20">
@@ -85,13 +65,13 @@ export function Gallery({ initialItems }: GalleryProps) {
 
         {/* Category Tabs */}
         <FadeIn>
-          <div className="mb-8 flex flex-wrap gap-2 border-b border-border pb-4">
+          <div className="mb-8 flex overflow-x-auto whitespace-nowrap flex-nowrap gap-2 border-b border-border pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
             {categories.map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setActiveTab(cat)}
-                className={`px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 border active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                className={`shrink-0 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-200 border active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                   activeTab === cat
                     ? "bg-[var(--accent)] text-[var(--accent-foreground)] border-[var(--accent)] shadow-[0_4px_12px_rgba(224,79,22,0.2)]"
                     : "text-muted hover:text-foreground hover:bg-surface-elevated bg-background border-border"
@@ -141,59 +121,13 @@ export function Gallery({ initialItems }: GalleryProps) {
         )}
       </Container>
 
-      {/* Lightbox Overlay */}
-      {activeImageIndex !== null && filteredItems[activeImageIndex] && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md transition-all duration-300">
-          <button
-            type="button"
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 text-white/70 hover:text-white p-2 z-50 rounded-full bg-white/5 border border-white/10"
-            aria-label="Close gallery lightbox"
-          >
-            <X className="h-6 w-6" />
-          </button>
-
-          <button
-            onClick={handlePrev}
-            className="absolute left-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-
-          <div className="relative max-h-[85vh] max-w-[90vw] overflow-hidden flex flex-col items-center">
-            <div className="relative aspect-[4/3] w-screen max-w-4xl max-h-[70vh]">
-              <Image
-                src={filteredItems[activeImageIndex].src}
-                alt={filteredItems[activeImageIndex].alt}
-                fill
-                className="object-contain"
-                sizes="100vw"
-                priority
-              />
-            </div>
-            <div className="mt-4 text-center text-white px-6">
-              <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-semibold">
-                {filteredItems[activeImageIndex].category}
-              </span>
-              <h3 className="font-display text-xl font-medium mt-0.5">
-                {filteredItems[activeImageIndex].title}
-              </h3>
-              <p className="text-sm text-neutral-400 mt-1">
-                {filteredItems[activeImageIndex].tagline}
-              </p>
-            </div>
-          </div>
-
-          <button
-            onClick={handleNext}
-            className="absolute right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white"
-            aria-label="Next image"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
-      )}
+      <ImageViewerModal
+        images={imageUrls}
+        initialIndex={activeImageIndex ?? 0}
+        isOpen={activeImageIndex !== null}
+        onClose={closeLightbox}
+        captions={captions}
+      />
     </Section>
   );
 }

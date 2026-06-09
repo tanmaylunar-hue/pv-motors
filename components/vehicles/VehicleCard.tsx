@@ -125,7 +125,7 @@ export function VehicleCard({ item, variant = "default" }: VehicleCardProps) {
           <Numeric as="p" className="text-lg font-semibold text-foreground">
             {formatPrice(item.price)}
           </Numeric>
-          <span className="flex items-center gap-1 text-sm text-muted opacity-0 transition-all duration-300 group-hover:opacity-100">
+          <span className="flex items-center gap-1 text-sm text-muted opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
             View
             <ArrowRight className="h-4 w-4" />
           </span>

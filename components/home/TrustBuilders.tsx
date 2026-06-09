@@ -22,7 +22,7 @@ export function TrustBuilders({ items }: TrustBuildersProps) {
         </FadeIn>
 
         {/* 4 columns layout matching the 4 statistics items */}
-        <div className="grid gap-6 grid-cols-2 lg:grid-cols-4 mt-10">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-8 md:mt-10">
           {items.map((stat, i) => (
             <FadeIn key={stat.id} delay={i * 100} className="h-full">
               <Card className="flex flex-col items-center justify-center text-center p-8 bg-background border border-border/80 hover:border-foreground/20 hover:shadow-[0_8px_30px_rgba(0,0,0,0.025)] transition-all duration-200 rounded-none h-full shadow-sm">

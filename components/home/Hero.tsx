@@ -27,7 +27,7 @@ export function Hero() {
             </p>
           </div>
 
-          <h1 className="font-display text-5xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl xl:text-8xl">
+          <h1 className="font-display text-4xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-7xl xl:text-8xl">
             <span className="animate-fade-up opacity-0-start block animation-delay-75">
               The Future
             </span>
@@ -42,17 +42,17 @@ export function Hero() {
           </p>
 
           <div className="animate-fade-up opacity-0-start animation-delay-250 mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <Button href="/vehicles" size="lg">
+            <Button href="/vehicles" size="lg" className="w-full sm:w-auto">
               Explore Collection
               <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button href="/contact" variant="outline" size="lg">
+            <Button href="/contact" variant="outline" size="lg" className="w-full sm:w-auto">
               Book Test Ride
             </Button>
           </div>
         </div>
 
-        <div className="animate-fade-up opacity-0-start animation-delay-300 mt-20 grid grid-cols-2 gap-px border border-border bg-border/60 sm:grid-cols-4 shadow-sm">
+        <div className="animate-fade-up opacity-0-start animation-delay-300 mt-10 lg:mt-20 grid grid-cols-2 gap-px border border-border bg-border/60 sm:grid-cols-4 shadow-sm">
           {[
             { value: "220 km", label: "Max Range" },
             { value: "100 km/h", label: "Top Speed" },
@@ -61,15 +61,15 @@ export function Hero() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center justify-center bg-background px-6 py-8 sm:px-8"
+              className="flex flex-col items-center justify-center bg-background px-4 py-5 md:px-8 md:py-8"
             >
               <Numeric
                 as="p"
-                className="text-2xl font-semibold text-foreground sm:text-3xl"
+                className="text-xl font-semibold text-foreground md:text-3xl"
               >
                 {stat.value}
               </Numeric>
-              <p className="mt-1 text-xs uppercase tracking-widest text-muted">
+              <p className="mt-1 text-[10px] sm:text-xs uppercase tracking-widest text-muted">
                 {stat.label}
               </p>
             </div>

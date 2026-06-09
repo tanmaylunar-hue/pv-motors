@@ -25,7 +25,7 @@ export async function FeaturedVehicles() {
             <p className="text-sm text-muted">No featured vehicles marked at the moment.</p>
           </div>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {featured.map((item, i) => (
               <FadeIn key={item.id} delay={i * 100} className="flex h-full">
                 <div className="flex w-full flex-col border border-border bg-background p-6 transition-all duration-300 hover:shadow-lg group">

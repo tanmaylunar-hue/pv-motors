@@ -6,7 +6,7 @@ import { reviews } from "@/lib/reviews";
 
 function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
   return (
-    <div className="w-[340px] shrink-0 border border-border bg-background p-8 sm:w-[380px] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(224,79,22,0.03)] hover:border-[var(--accent)]/30 flex flex-col justify-between">
+    <div className="w-[280px] shrink-0 border border-border bg-background p-6 sm:p-8 sm:w-[380px] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(224,79,22,0.03)] hover:border-[var(--accent)]/30 flex flex-col justify-between">
       <div>
         <div className="flex justify-between items-start mb-4">
           <Quote className="h-6 w-6 text-muted/20" />
@@ -74,13 +74,13 @@ export function CustomerReviews() {
 
       <Container>
         <FadeIn delay={300}>
-          <div className="mt-12 grid gap-px border border-border/20 bg-border/20 sm:grid-cols-3">
+          <div className="mt-8 grid gap-px border border-border/20 bg-border/20 grid-cols-1 md:grid-cols-3">
             {[
               { value: "4.9", label: "Average Rating" },
               { value: "500+", label: "Happy Customers" },
               { value: "98%", label: "Would Recommend" },
             ].map((stat) => (
-              <div key={stat.label} className="bg-surface-elevated px-6 py-8 text-center flex flex-col justify-center items-center">
+              <div key={stat.label} className="bg-surface-elevated px-6 py-5 md:py-8 text-center flex flex-col justify-center items-center">
                 <Numeric as="p" className="text-3xl font-semibold text-foreground">
                   {stat.value}
                 </Numeric>

@@ -5,7 +5,7 @@ export function BrandBanner() {
   return (
     <Section className="py-0">
       <Container>
-        <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/10 via-surface to-surface p-8 md:p-12">
+        <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-r from-accent/10 via-surface to-surface p-6 md:p-12">
           <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/10 blur-2xl" />
           <div className="relative max-w-2xl">
             <p className="mb-2 text-sm font-medium uppercase tracking-widest text-accent">
@@ -19,7 +19,7 @@ export function BrandBanner() {
               EMI options available.
             </p>
             <div className="mt-6">
-              <Button href="/contact">Claim Your Offer</Button>
+              <Button href="/contact" className="w-full sm:w-auto">Claim Your Offer</Button>
             </div>
           </div>
         </div>

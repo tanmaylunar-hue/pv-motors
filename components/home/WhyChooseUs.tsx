@@ -22,7 +22,7 @@ export function WhyChooseUs({ items }: WhyChooseUsProps) {
           />
         </FadeIn>
         
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 md:mt-10">
           {items.map((feature, i) => {
             // Resolve the Lucide icon dynamically from the string name
             const IconComponent = (Icons as any)[feature.icon] || Icons.CheckCircle2;

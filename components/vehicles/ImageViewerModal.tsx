@@ -4,11 +4,18 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 
+interface CaptionInfo {
+  title: string;
+  tagline?: string;
+  category?: string;
+}
+
 interface ImageViewerModalProps {
   images: string[];
   initialIndex: number;
   isOpen: boolean;
   onClose: () => void;
+  captions?: CaptionInfo[];
 }
 
 export function ImageViewerModal({
@@ -16,6 +23,7 @@ export function ImageViewerModal({
   initialIndex,
   isOpen,
   onClose,
+  captions,
 }: ImageViewerModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [scale, setScale] = useState(1);
@@ -36,6 +44,7 @@ export function ImageViewerModal({
   const imageRef = useRef<HTMLDivElement>(null);
   const touchStartRef = useRef<{ dist: number; scale: number } | null>(null);
   const touchStartX = useRef<number | null>(null);
+  const lastTouchTime = useRef<number>(0);
 
   // Prev / Next actions (declared before useEffect to avoid TDZ / access-before-declaration)
   const handlePrev = useCallback(() => {
@@ -79,6 +88,35 @@ export function ImageViewerModal({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, handlePrev, handleNext, onClose]);
+
+  // Lock body scrolling when fullscreen viewer is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // Register raw touchmove listener with passive: false to prevent background scroll and browser zoom
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !isOpen) return;
+
+    const handleTouchMoveRaw = (e: TouchEvent) => {
+      if (e.touches.length > 1 || scale > 1) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    container.addEventListener("touchmove", handleTouchMoveRaw, { passive: false });
+    return () => {
+      container.removeEventListener("touchmove", handleTouchMoveRaw);
+    };
+  }, [isOpen, scale]);
 
   // Zoom In / Out
   const zoomIn = () => {
@@ -146,6 +184,16 @@ export function ImageViewerModal({
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    // Custom touch double-tap gesture detector (replaces onDoubleClick on smartphones)
+    const now = Date.now();
+    if (now - lastTouchTime.current < 300) {
+      e.preventDefault();
+      toggleDoubleCheckZoom();
+      lastTouchTime.current = 0;
+      return;
+    }
+    lastTouchTime.current = now;
+
     if (e.touches.length === 2) {
       const dist = getTouchDist(e.touches[0], e.touches[1]);
       touchStartRef.current = { dist, scale };
@@ -209,9 +257,9 @@ export function ImageViewerModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-md transition-all duration-300">
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-black/95 backdrop-blur-md transition-all duration-300">
       {/* Top Header Bar */}
-      <div className="flex h-16 w-full items-center justify-between px-6 text-white bg-gradient-to-b from-black/80 to-transparent">
+      <div className="flex h-14 sm:h-16 w-full items-center justify-between px-6 text-white bg-gradient-to-b from-black/80 to-transparent">
         <span className="text-sm font-mono tracking-wider">
           {currentIndex + 1} / {images.length}
         </span>
@@ -221,7 +269,7 @@ export function ImageViewerModal({
           <button
             onClick={zoomOut}
             disabled={scale <= 1}
-            className="p-2 text-white/70 transition-colors hover:text-white disabled:opacity-30"
+            className="p-2 text-white/70 transition-colors hover:text-white disabled:opacity-30 min-h-[44px]"
             title="Zoom Out"
           >
             <ZoomOut className="h-5 w-5" />
@@ -229,7 +277,7 @@ export function ImageViewerModal({
           <button
             onClick={zoomIn}
             disabled={scale >= 4}
-            className="p-2 text-white/70 transition-colors hover:text-white disabled:opacity-30"
+            className="p-2 text-white/70 transition-colors hover:text-white disabled:opacity-30 min-h-[44px]"
             title="Zoom In"
           >
             <ZoomIn className="h-5 w-5" />
@@ -237,7 +285,7 @@ export function ImageViewerModal({
           <button
             onClick={resetZoom}
             disabled={scale === 1}
-            className="p-2 text-white/70 transition-colors hover:text-white disabled:opacity-30"
+            className="p-2 text-white/70 transition-colors hover:text-white disabled:opacity-30 min-h-[44px]"
             title="Reset Zoom"
           >
             <Maximize2 className="h-5 w-5" />
@@ -245,7 +293,7 @@ export function ImageViewerModal({
           <div className="h-6 w-px bg-white/20" />
           <button
             onClick={onClose}
-            className="p-2 text-white/70 transition-colors hover:text-white"
+            className="p-2 text-white/70 transition-colors hover:text-white min-h-[44px]"
             aria-label="Close image viewer"
           >
             <X className="h-6 w-6" />
@@ -268,7 +316,7 @@ export function ImageViewerModal({
         {/* Left Arrow */}
         <button
           onClick={handlePrev}
-          className="absolute left-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+          className="absolute left-6 z-10 hidden sm:flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white active:scale-95"
           aria-label="Previous image"
         >
           <ChevronLeft className="h-6 w-6" />
@@ -297,15 +345,34 @@ export function ImageViewerModal({
         {/* Right Arrow */}
         <button
           onClick={handleNext}
-          className="absolute right-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white active:scale-95"
+          className="absolute right-6 z-10 hidden sm:flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-all hover:bg-white/10 hover:text-white active:scale-95"
           aria-label="Next image"
         >
           <ChevronRight className="h-6 w-6" />
         </button>
       </div>
 
-      {/* Thumbnail Strip */}
-      <div className="w-full bg-black/60 p-4 border-t border-white/10">
+      {/* Captions if available */}
+      {captions && captions[currentIndex] && (
+        <div className="w-full text-center text-white pb-4 px-6 select-none bg-gradient-to-t from-black/50 to-transparent z-10">
+          {captions[currentIndex].category && (
+            <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-semibold block">
+              {captions[currentIndex].category}
+            </span>
+          )}
+          <h3 className="font-display text-lg sm:text-xl font-medium mt-0.5">
+            {captions[currentIndex].title}
+          </h3>
+          {captions[currentIndex].tagline && (
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1 max-w-xl mx-auto">
+              {captions[currentIndex].tagline}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Thumbnail Strip (Hidden on mobile phones for vertical screen space optimization) */}
+      <div className="w-full bg-black/60 p-4 border-t border-white/10 hidden sm:block">
         <div className="mx-auto flex max-w-2xl justify-center gap-2 overflow-x-auto py-2">
           {images.map((src, index) => (
             <button
@@ -327,6 +394,28 @@ export function ImageViewerModal({
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Hidden container to cache and preload next and previous images */}
+      <div className="hidden" aria-hidden="true">
+        {images[(currentIndex + 1) % images.length] && (
+          <Image
+            src={images[(currentIndex + 1) % images.length]}
+            alt="Preload next"
+            width={100}
+            height={100}
+            priority
+          />
+        )}
+        {images[(currentIndex - 1 + images.length) % images.length] && (
+          <Image
+            src={images[(currentIndex - 1 + images.length) % images.length]}
+            alt="Preload prev"
+            width={100}
+            height={100}
+            priority
+          />
+        )}
       </div>
     </div>
   );

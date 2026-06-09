@@ -55,6 +55,13 @@ export function Select({ label, error, className, id, children, ...props }: Sele
       )}
       <select
         id={inputId}
+        style={{
+          backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23525866' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right 1rem center",
+          backgroundSize: "1.2em",
+          paddingRight: "2.5rem"
+        }}
         className={cn(
           "w-full border border-border bg-background px-4 py-3 text-base md:text-sm text-foreground rounded-none appearance-none",
           "focus:border-black focus:ring-1 focus:ring-black/10 focus:outline-none",
